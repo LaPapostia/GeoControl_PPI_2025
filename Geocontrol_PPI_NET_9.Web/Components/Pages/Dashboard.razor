@@ -1,0 +1,150 @@
+﻿@page "/dashboard"
+@using Geocontrol_PPI_NET_9.Models.Notations
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Notations
+@using Newtonsoft.Json
+@rendermode InteractiveServer
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject IJSRuntime JS
+@inject UserApiService GeocontrolApi
+
+<PageTitle>Mapa en tiempo real</PageTitle>
+<h3>Mapa en tiempo real</h3>
+<div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
+<button @onclick="() => ToggleEditMode()">@ToggleButtonText</button>
+
+
+<button @onclick="() => ValidateCurrentPosition()">@PositionButtonText</button>
+@code {
+
+    private string ToggleButtonText = "Editar Valores";
+    private bool ToggleButtonValue = false;
+
+    private string PositionButtonText = "Validar Posición Actual";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            Console.WriteLine("Inicializando el mapa...");
+            if (firstRender)
+            {
+                if (await JS.InvokeAsync<bool>("requestGeolocationPermission"))
+                {
+                    List<Zone> resultZones = [];
+
+                    /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+                    ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+                        throw new Exception("Error al obtener los datos del servicio instanciado");
+
+                    if (service is not null)
+                        resultZones = await service.ObtainZones();
+
+                    List<List<Coords>> coords = [];
+
+                    foreach (var zone in resultZones)
+                    {
+                        List<Coords> auxCoords = [];
+                        foreach (var coord in JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas))
+                        {
+                            auxCoords.Add(new Coords
+                            {
+                                lat = coord.lat,
+                                lng = coord.lng
+                            });
+                        }
+                        coords.Add(auxCoords);
+                    }
+
+                    await JS.InvokeVoidAsync("googleMapsInterop.initMap", "map", 6.185, -75.656, 16, coords.ToArray());
+                    await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
+                }
+                else
+                {
+                    throw new Exception("Permiso de geolocalización denegado.");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
+        }
+    }
+
+    private async Task StartTrackingLocation()
+    {
+        await JS.InvokeVoidAsync("startTrackingLocation");
+    }
+
+    private async Task ToggleEditMode()
+    {
+        try
+        {
+            ToggleButtonValue = !ToggleButtonValue;
+
+            if (ToggleButtonValue)
+            {
+                ToggleButtonText = "Finalizar Edición";
+            }
+            else
+            {
+                ToggleButtonText = "Editar Valores";
+            }
+
+            await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cambiar el modo de edición: {ex.Message}");
+        }
+    }
+
+    private async Task ValidateCurrentPosition()
+    {
+        try
+        {
+            if (await JS.InvokeAsync<bool>("googleMapsInterop.isPositionInsidePolygons"))
+            {
+                PositionButtonText = "✅ La posición está dentro de un polígono existente.";
+            }
+            else
+            {
+                PositionButtonText = "❌ La posición está fuera de todos los polígonos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al validar la zona actual: {ex.Message}");
+        }
+    }
+
+    [JSInvokable]
+    public static async Task OnPolygonCreated(string polygonJson)
+    {
+        try
+        {
+            Zone zone = new Zone
+            {
+                zonmar_nombre = "Nueva Zona",
+                zonmar_observacion = "Zona creada desde el mapa",
+                zonmar_coordenadas = polygonJson,
+                zonmar_hora_fin = DateTime.Now.AddHours(1),
+                zonmar_hora_inicio = DateTime.Now
+            };
+
+            ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+                throw new Exception("Error al obtener los datos del servicio instanciado");
+            if (service is not null)
+                await service.CreateZone(zone);
+
+            Console.WriteLine($"Polígono creado: {polygonJson}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear el polígono: {ex.Message}");
+        }
+    }
+}

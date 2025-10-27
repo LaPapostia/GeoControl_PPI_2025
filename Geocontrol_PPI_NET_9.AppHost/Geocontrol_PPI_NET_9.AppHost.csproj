@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.3.1" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>1cd28795-f986-4ce2-9869-f9c6b6d80350</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geocontrol_PPI_NET_9.ApiService\Geocontrol_PPI_NET_9.ApiService.csproj" />
+    <ProjectReference Include="..\Geocontrol_PPI_NET_9.Web\Geocontrol_PPI_NET_9.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.Docker" Version="9.5.2-preview.1.25522.3" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.5.2" />
+    <PackageReference Include="Aspire.Microsoft.Data.SqlClient" Version="9.5.2" />
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.5.2" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.SqlDatabaseProjects" Version="9.8.1-beta.413" />
+  </ItemGroup>
+
+</Project>

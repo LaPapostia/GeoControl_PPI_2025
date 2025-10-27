@@ -1,0 +1,26 @@
+-- Instalamos la herramienta para la ejecución de comandos aspire
+dotnet tool install --global aspire.cli --prerelease
+
+-- Publicamos nuestro aplicativo con destino a una imagen de docker
+aspire publish -o folder_name/
+
+-- Ejecutamos la imagen del proyecto para inicializar el aplicativo
+docker compose up -d
+
+-- Creamos las claves secretas de usuario
+dotnet user-secrets set Parameter:sql-pass <secret_pass>
+dotnet user-secrets set Parameter:sql-connection <secret_pass>
+
+-- Ejecutamos la imagen contenedora para el docker compose (en la carpeta del archivo docker-compose.sqlserver.yml)
+docker-compose -f docker-compose.sqlserver.yml up -d
+
+
+
+--- Tests ---
+(Creadte a Docker container for sql manually)
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=S0p0rt3SQL" -p 1433:1433 --name sql_geocontrol_ppi --hostname sql_geocontrol_ppi -d mcr.microsoft.com/mssql/server:2022-latest
+
+Sources
+https://erikej.github.io/sql/dacfx/aspire/2025/05/18/sql-aspire-dacfx.html
+
+

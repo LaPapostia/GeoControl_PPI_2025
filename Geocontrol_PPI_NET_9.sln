@@ -1,0 +1,54 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.AppHost", "Geocontrol_PPI_NET_9.AppHost\Geocontrol_PPI_NET_9.AppHost.csproj", "{57677CCC-866A-48A5-834B-056C7C37EA25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.ServiceDefaults", "Geocontrol_PPI_NET_9.ServiceDefaults\Geocontrol_PPI_NET_9.ServiceDefaults.csproj", "{88416BD8-B19B-B2D9-2DD0-DFE1247C47C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.ApiService", "Geocontrol_PPI_NET_9.ApiService\Geocontrol_PPI_NET_9.ApiService.csproj", "{AF98919E-72C9-0FBC-AE62-0FB98FE936F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.Web", "Geocontrol_PPI_NET_9.Web\Geocontrol_PPI_NET_9.Web.csproj", "{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.Tests", "Geocontrol_PPI_NET_9.Tests\Geocontrol_PPI_NET_9.Tests.csproj", "{0386EF40-9123-4F1E-5D17-58537147800F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocontrol_PPI_NET_9.Models", "Geocontrol_PPI_NET_9.Models\Geocontrol_PPI_NET_9.Models.csproj", "{0ABA5F54-E275-4EFB-84D6-FD23544903A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57677CCC-866A-48A5-834B-056C7C37EA25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57677CCC-866A-48A5-834B-056C7C37EA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57677CCC-866A-48A5-834B-056C7C37EA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57677CCC-866A-48A5-834B-056C7C37EA25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88416BD8-B19B-B2D9-2DD0-DFE1247C47C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88416BD8-B19B-B2D9-2DD0-DFE1247C47C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88416BD8-B19B-B2D9-2DD0-DFE1247C47C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88416BD8-B19B-B2D9-2DD0-DFE1247C47C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF98919E-72C9-0FBC-AE62-0FB98FE936F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF98919E-72C9-0FBC-AE62-0FB98FE936F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF98919E-72C9-0FBC-AE62-0FB98FE936F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF98919E-72C9-0FBC-AE62-0FB98FE936F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0386EF40-9123-4F1E-5D17-58537147800F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0386EF40-9123-4F1E-5D17-58537147800F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0386EF40-9123-4F1E-5D17-58537147800F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0386EF40-9123-4F1E-5D17-58537147800F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ABA5F54-E275-4EFB-84D6-FD23544903A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ABA5F54-E275-4EFB-84D6-FD23544903A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ABA5F54-E275-4EFB-84D6-FD23544903A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ABA5F54-E275-4EFB-84D6-FD23544903A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D09764A-E603-44E2-A66F-222435FE8CE5}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,62 @@
+﻿@page "/users"
+@using Geocontrol_PPI_NET_9.Models.Auth
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@rendermode InteractiveServer
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject UserApiService GeocontrolApi
+
+<PageTitle>Users</PageTitle>
+
+<h1>Users</h1>
+
+<p>This component demonstrates showing data loaded from a backend API service.</p>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cédula</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User user in users)
+            {
+                <tr>
+                    <td>@user.usu_cedulaP</td>
+                    <td>@user.usu_nombres</td>
+                    <td>@user.usu_apellidos</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<User>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            UserApiService service = ServiceLocator.Instance?.GetRequiredService<UserApiService>() ??
+                throw new Exception("Error al obtener los datos del servicio instanciado");
+            if (service is not null)
+                users = await service.GetUsersAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener los usuarios: {ex.Message}");
+        }
+
+    }
+}
