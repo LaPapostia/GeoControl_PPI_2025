@@ -2,7 +2,7 @@
 {
     public class Coords
     {
-
+        public int id { get; set; } = 0;
         public double lng { get; set; }
         public double lat { get; set; }
     }

@@ -83,6 +83,9 @@
     },
 
     addPolygon: function (points, editable, draggable) {
+
+        const idZona = points[0]?.id ?? null;
+
         const polygon = new google.maps.Polygon({
             paths: points,
             map: this.map,
@@ -94,6 +97,7 @@
             editable: editable,
             draggable: draggable
         });
+        polygon.idZona = idZona;
         this.polygons.push(polygon);
     },
 
@@ -124,13 +128,11 @@
         const point = new google.maps.LatLng(lat, lng);
         for (const polygon of this.polygons) {
             if (google.maps.geometry.poly.containsLocation(point, polygon)) {
-                console.log("✅ La posición está dentro de un polígono existente.");
-                return true;
+                return polygon.idZona ?? 0;
             }
         }
 
-        console.log("❌ La posición está fuera de todos los polígonos.");
-        return false;
+        return 0;
     }
 };
 

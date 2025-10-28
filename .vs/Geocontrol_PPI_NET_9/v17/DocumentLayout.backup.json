@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{57677CCC-866A-48A5-834B-056C7C37EA25}|Geocontrol_PPI_NET_9.AppHost\\Geocontrol_PPI_NET_9.AppHost.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{57677CCC-866A-48A5-834B-056C7C37EA25}|Geocontrol_PPI_NET_9.AppHost\\Geocontrol_PPI_NET_9.AppHost.csproj|solutionrelative:geocontrol_ppi_net_9.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,6 +43,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AppHost.cs",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T20:42:27.362Z",
+              "EditorCaption": ""
             }
           ]
         }

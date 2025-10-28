@@ -1,0 +1,267 @@
+﻿@page "/principal"
+@using Geocontrol_PPI_NET_9.Models.Notations
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Notations
+@using Newtonsoft.Json
+@rendermode InteractiveServer
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject IJSRuntime JS
+@inject UserApiService GeocontrolApi
+
+<PageTitle>Inicio</PageTitle>
+
+<h2 class="text-2xl font-semibold mb-4">Mapa y registros de marcación</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Sección del mapa -->
+    <div class="bg-white p-3 rounded-2xl shadow-md">
+        <div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
+        <div class="flex justify-between items-center mt-3">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
+                    @onclick="ToggleEditMode">
+                @ToggleButtonText
+            </button>
+
+            <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
+                    @onclick="RefreshNotations">
+                🔄 Actualizar registros
+            </button>
+
+            <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
+                    @onclick="() => ValidateCurrentPosition()">
+                @PositionButtonText
+            </button>
+        </div>
+    </div>
+
+    <!-- Sección de la tabla -->
+    <div class="bg-white p-3 rounded-2xl shadow-md overflow-auto max-h-[600px]">
+        <h3 class="text-lg font-semibold mb-3">Registros de marcación</h3>
+
+        @if (resultNotations is null)
+        {
+            <p>Cargando registros...</p>
+        }
+        else if (!resultNotations.Any())
+        {
+            <p class="text-gray-500 italic">No hay registros disponibles.</p>
+        }
+        else
+        {
+            <table class="min-w-full text-sm text-left border border-gray-200 rounded-xl">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-2 border-b">#</th>
+                        <th class="p-2 border-b">Zona</th>
+                        <th class="p-2 border-b">Fecha</th>
+                        <th class="p-2 border-b">Hora</th>
+                        <th class="p-2 border-b">Observación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in resultNotations)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-2 border-b">@item.mar_consecutivoP</td>
+                            <td class="p-2 border-b">@item.marzonmar_consecutivo</td>
+                            <td class="p-2 border-b">@item.mar_fecha.ToShortDateString()</td>
+                            <td class="p-2 border-b">@item.mar_fecha.ToShortTimeString()</td>
+                            <td class="p-2 border-b">@item.mar_observacion</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+
+    private string ToggleButtonText = "✏️ Editar polígonos";
+    private bool ToggleButtonValue = false;
+
+    private string PositionButtonText = "Validar Posición Actual";
+
+    private List<Zone> listZones = [];
+
+
+    private List<Notation> resultNotations;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                if (await JS.InvokeAsync<bool>("requestGeolocationPermission"))
+                {
+                    listZones = [];
+
+                    /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+                    ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+                        throw new Exception("Error al obtener los datos del servicio instanciado");
+
+                    if (service is not null)
+                        listZones = await service.ObtainZones();
+
+                    List<List<Coords>> coords = [];
+
+                    foreach (var zone in listZones)
+                    {
+                        List<Coords> auxCoords = [];
+                        foreach (var coord in JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas))
+                        {
+                            auxCoords.Add(new Coords
+                            {
+                                id = zone.zonmar_consecutivoP,
+                                lat = coord.lat,
+                                lng = coord.lng
+                            });
+                        }
+                        coords.Add(auxCoords);
+                    }
+
+                    await JS.InvokeVoidAsync("googleMapsInterop.initMap", "map", 6.185, -75.656, 16, coords.ToArray());
+                    await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
+                }
+                else
+                {
+                    throw new Exception("Permiso de geolocalización denegado.");
+                }
+            }
+
+            await RefreshNotations();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
+        }
+    }
+
+    private async Task RefreshNotations()
+    {
+        try
+        {
+            /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+            NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
+                throw new Exception("Error al obtener los datos del servicio instanciado");
+            resultNotations = await notationService.ObtainNotations(null, null, null, null);
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener los registros de marcación: {ex.Message}");
+        }
+    }
+
+    private async Task StartTrackingLocation()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("startTrackingLocation");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al seguir el trazo de la persona");
+        }
+
+    }
+
+    private async Task ToggleEditMode()
+    {
+        try
+        {
+            ToggleButtonValue = !ToggleButtonValue;
+
+            if (ToggleButtonValue)
+            {
+                ToggleButtonText = "✅ Finalizar edición";
+            }
+            else
+            {
+                ToggleButtonText = "✏️ Editar polígonos";
+            }
+
+            await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cambiar el modo de edición: {ex.Message}");
+        }
+    }
+
+    private async Task ValidateCurrentPosition()
+    {
+        try
+        {
+            /// Notify the zone validation
+            PositionButtonText = "Verificando localización...";
+
+            /// Obtain the zone id value
+            int? zoneId = await JS.InvokeAsync<int?>("googleMapsInterop.isPositionInsidePolygons");
+
+            /// Validate the current zone
+            if (zoneId != 0)
+            {
+                var resultZona = listZones.Find(x => x.zonmar_consecutivoP == zoneId) ?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
+
+                Notation notation = new()
+                {
+                    marusu_cedula = "1103858654",
+                    marzonmar_consecutivo = (int)zoneId,
+                    mar_archivo = "tucu.pdf",
+                    mar_estado = true,
+                    mar_observacion = "Marcación de prueba",
+                    Creation = true
+                };
+
+                /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+                NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
+                    throw new Exception("Error al obtener los datos del servicio instanciado");
+                await notationService.CreateNotation(notation);
+
+                PositionButtonText = "Marcación Correcta.";
+            }
+            else
+            {
+                PositionButtonText = "❌ La posición está fuera de todos los polígonos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            PositionButtonText = "Error al guardar la marcación.";
+            Console.WriteLine($"Error al validar la zona actual: {ex.Message}");
+        }
+    }
+
+    [JSInvokable]
+    public static async Task OnPolygonCreated(string polygonJson)
+    {
+        try
+        {
+            Zone zone = new Zone
+            {
+                zonmar_nombre = "Nueva Zona",
+                zonmar_observacion = "Zona creada desde el mapa",
+                zonmar_coordenadas = polygonJson,
+                zonmar_hora_fin = DateTime.Now.AddHours(1),
+                zonmar_hora_inicio = DateTime.Now
+            };
+
+            ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+                throw new Exception("Error al obtener los datos del servicio instanciado");
+            if (service is not null)
+                await service.CreateZone(zone);
+
+            Console.WriteLine($"Polígono creado: {polygonJson}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear el polígono: {ex.Message}");
+        }
+    }
+}

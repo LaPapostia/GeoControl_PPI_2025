@@ -23,7 +23,7 @@ services:
     volumes:
       - ./bd_data:/var/opt/mssql/data
       - geocontrol_sql_data:/var/opt/mssql
-
+      - /etc/localtime:/etc/localtime:ro
 volumes:
     geocontrol_sql_data:
 
