@@ -9,6 +9,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
       - MSSQL_PID=Express
+      - TZ=America/Bogota
     ports:
       - "1433:1433"
     healthcheck:
