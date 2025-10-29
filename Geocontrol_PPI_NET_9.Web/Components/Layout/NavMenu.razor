@@ -1,6 +1,10 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Geocontrol_PPI_NET_9.Web.Services
+
+@inject AuthService Auth
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Geocontrol_PPI_NET_9</a>
+        <a class="navbar-brand" href="">GeoControl App</a>
     </div>
 </div>
 
@@ -10,20 +14,49 @@
     <nav class="nav flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
             </NavLink>
-        </div>
+            @if (Auth.IsLoggedIn)
+            {
+                <NavLink class="nav-link" href="/map" Match="NavLinkMatch.All">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Mapa
+                </NavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="principal">
-                <span class="bi bi-plus-square-fill" aria-hidden="true"></span> Map
-            </NavLink>
-        </div>
+                <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Usuarios
+                </NavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="users">
-                <span class="bi bi-list-nested" aria-hidden="true"></span> Users
-            </NavLink>
+                <NavLink class="nav-link" href="/reports" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Reportes
+                </NavLink>
+            }
         </div>
     </nav>
 </div>
+
+
+@code {
+    @code {
+        protected override void OnInitialized()
+        {
+            Auth.OnChange += AuthStateChanged;
+        }
+
+        private async void AuthStateChanged()
+        {
+            // Asegura que el renderizado se ejecute en el dispatcher de Blazor
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private void Logout()
+        {
+            Auth.Logout();
+        }
+
+        public void Dispose()
+        {
+            /// Necesario para evitar leaks de memoria
+            Auth.OnChange -= AuthStateChanged;
+        }
+    }
+}

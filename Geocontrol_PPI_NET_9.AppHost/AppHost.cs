@@ -22,9 +22,9 @@ try
 
     var sql = builder.AddConnectionString("sql-connection-string");
 
-    var sqldDacpacProject = builder.AddSqlProject("sql-geocontrol-project")
-       .WithDacpac("../Geocontrol_PPI_NET_9.Resources/GeoControl.dacpac")
-       .WithReference(sql);
+    //var sqldDacpacProject = builder.AddSqlProject("sql-geocontrol-project")
+    //   .WithDacpac("../Geocontrol_PPI_NET_9.Resources/GeoControl.dacpac")
+    //   .WithReference(sql);
 
     //var sqlContainer = builder.AddContainer("geocontrol-sql", "mcr.microsoft.com/mssql/server:2022-latest")
     //    .WithEnvironment("ACCEPT_EULA", "Y")

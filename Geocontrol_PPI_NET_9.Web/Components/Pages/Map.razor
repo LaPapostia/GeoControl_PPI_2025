@@ -1,4 +1,4 @@
-﻿@page "/principal"
+﻿@page "/map"
 @using Geocontrol_PPI_NET_9.Models.Notations
 @using Geocontrol_PPI_NET_9.Web.Services
 @using Geocontrol_PPI_NET_9.Web.Services.Auth
@@ -13,33 +13,44 @@
 
 <PageTitle>Inicio</PageTitle>
 
-<h2 class="text-2xl font-semibold mb-4">Mapa y registros de marcación</h2>
+<h2 class="text-2xl font-semibold mb-4" style="color:white">Mapa y registros de marcación</h2>
+<div class="mapa-layout">
+    <!-- Columna izquierda -->
+    <div class="mapa-col">
+        <div class="mapa">
+            <div id="map" style="height: 500px; width: 100%; border-radius: 8px;"></div>
+        </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <!-- Sección del mapa -->
-    <div class="bg-white p-3 rounded-2xl shadow-md">
-        <div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
+        <div class="info-card">
+            <h4>Zona de Marcación</h4>
+            <p><strong>Estado:</strong> Dentro de la zona</p>
+            <p><strong>Zona:</strong> Parque Central</p>
+            <p><strong>Hora de Entrada:</strong> 08:15 AM</p>
+            <p><strong>Hora de Salida:</strong> 12:30 PM</p>
+        </div>
+
         <div class="flex justify-between items-center mt-3">
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
+            <button class="btn btn-danger"
                     @onclick="ToggleEditMode">
                 @ToggleButtonText
             </button>
 
-            <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
+            <button class="btn btn-info"
                     @onclick="RefreshNotations">
                 🔄 Actualizar registros
             </button>
 
-            <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
+            <button class="btn btn-secondary"
                     @onclick="() => ValidateCurrentPosition()">
                 @PositionButtonText
             </button>
         </div>
     </div>
 
-    <!-- Sección de la tabla -->
-    <div class="bg-white p-3 rounded-2xl shadow-md overflow-auto max-h-[600px]">
-        <h3 class="text-lg font-semibold mb-3">Registros de marcación</h3>
+
+    <!-- Columna derecha: tabla -->
+    <div class="tabla-col">
+        <h4>Historial de Marcaciones</h4>
 
         @if (resultNotations is null)
         {
@@ -115,11 +126,11 @@
                         foreach (var coord in JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas))
                         {
                             auxCoords.Add(new Coords
-                            {
-                                id = zone.zonmar_consecutivoP,
-                                lat = coord.lat,
-                                lng = coord.lng
-                            });
+                                {
+                                    id = zone.zonmar_consecutivoP,
+                                    lat = coord.lat,
+                                    lng = coord.lng
+                                });
                         }
                         coords.Add(auxCoords);
                     }
@@ -210,14 +221,14 @@
                 var resultZona = listZones.Find(x => x.zonmar_consecutivoP == zoneId) ?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
 
                 Notation notation = new()
-                {
-                    marusu_cedula = "1103858654",
-                    marzonmar_consecutivo = (int)zoneId,
-                    mar_archivo = "tucu.pdf",
-                    mar_estado = true,
-                    mar_observacion = "Marcación de prueba",
-                    Creation = true
-                };
+                    {
+                        marusu_cedula = "1001419143",
+                        marzonmar_consecutivo = (int)zoneId,
+                        mar_archivo = "tucu.pdf",
+                        mar_estado = true,
+                        mar_observacion = "Marcación de prueba",
+                        Creation = true
+                    };
 
                 /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
                 NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
@@ -244,13 +255,13 @@
         try
         {
             Zone zone = new Zone
-            {
-                zonmar_nombre = "Nueva Zona",
-                zonmar_observacion = "Zona creada desde el mapa",
-                zonmar_coordenadas = polygonJson,
-                zonmar_hora_fin = DateTime.Now.AddHours(1),
-                zonmar_hora_inicio = DateTime.Now
-            };
+                {
+                    zonmar_nombre = "Nueva Zona",
+                    zonmar_observacion = "Zona creada desde el mapa",
+                    zonmar_coordenadas = polygonJson,
+                    zonmar_hora_fin = DateTime.Now.AddHours(1),
+                    zonmar_hora_inicio = DateTime.Now
+                };
 
             ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
                 throw new Exception("Error al obtener los datos del servicio instanciado");

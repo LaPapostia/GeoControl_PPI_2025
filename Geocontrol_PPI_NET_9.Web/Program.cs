@@ -19,6 +19,8 @@ builder.Services.AddServerSideBlazor()
         options.DetailedErrors = true;
     });
 
+builder.Services.AddSingleton<AuthService>();
+
 builder.Services.AddHttpClient<UserApiService>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.

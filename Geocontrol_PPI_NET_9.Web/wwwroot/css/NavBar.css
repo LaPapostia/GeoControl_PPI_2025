@@ -1,0 +1,41 @@
+﻿/* Barra superior */
+.top-row.navbar {
+    background: linear-gradient(to right, #000000, #0d1b2a) !important; /* negro a azul oscuro */
+    color: #ffffff !important;
+}
+
+/* Marca (título/brand) */
+.top-row .navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+/* Fondo del panel lateral (cuando se usa en modo colapsado) */
+.nav-scrollable {
+    background: #0d1b2a !important; /* azul oscuro */
+    color: #ffffff !important;
+}
+
+    /* Links del menú */
+    .nav-scrollable .nav-link {
+        color: #ffffff !important;
+        transition: color 0.3s ease;
+    }
+
+        /* Hover en links */
+        .nav-scrollable .nav-link:hover {
+            color: #adb5bd !important; /* gris claro */
+        }
+
+        /* Link activo (NavLink en Blazor agrega la clase .active automáticamente) */
+        .nav-scrollable .nav-link.active {
+            color: #00b4d8 !important; /* azul cian */
+            font-weight: bold !important;
+            border-left: 3px solid #00b4d8 !important;
+            background-color: rgba(0, 180, 216, 0.1) !important; /* opcional */
+        }
+
+/* Botón toggler */
+.navbar-toggler {
+    filter: invert(1) !important; /* icono claro */
+}

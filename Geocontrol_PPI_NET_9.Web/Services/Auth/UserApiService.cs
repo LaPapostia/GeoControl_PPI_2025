@@ -5,7 +5,7 @@ namespace Geocontrol_PPI_NET_9.Web.Services.Auth;
 
 public class UserApiService
 {
-    private static HttpClient _httpClient = new HttpClient();
+    private static HttpClient _httpClient = new();
 
     public UserApiService(HttpClient httpClient)
     {

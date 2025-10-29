@@ -10,39 +10,92 @@
 
 <PageTitle>Users</PageTitle>
 
-<h1>Users</h1>
+<h1 style="color:white">Usuarios</h1>
 
-<p>This component demonstrates showing data loaded from a backend API service.</p>
 
-@if (users == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Cédula</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (User user in users)
+
+<div class="container mt-4">
+
+    <!-- Formulario para Agregar / Editar -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            @(IsEditing ? "Editar Usuario" : "Agregar Usuario")
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" @bind="CurrentUser.usu_nombres" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" @bind="CurrentUser.usu_correo" />
+                </div>
+            </div>
+            <button class="btn btn-success me-2" @onclick="SaveUser">
+                @(IsEditing ? "Actualizar" : "Agregar")
+            </button>
+            @if (IsEditing)
             {
-                <tr>
-                    <td>@user.usu_cedulaP</td>
-                    <td>@user.usu_nombres</td>
-                    <td>@user.usu_apellidos</td>
-                </tr>
+                <button class="btn btn-secondary" @onclick="CancelEdit">Cancelar</button>
             }
-        </tbody>
-    </table>
-}
+        </div>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            Lista de Usuarios
+        </div>
+        <div class="card-body">
+            @if (users == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in users)
+                        {
+                            <tr>
+                                <td>@user.usu_cedulaP</td>
+                                <td>@user.usu_nombres</td>
+                                <td>@user.usu_correo</td>
+                                <td>
+                                    <button class="btn btn-sm btn-info me-2" @onclick="() => EditUser(user)">
+                                        Editar
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(user)">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            
+        </div>
+    </div>
+
+</div>
 
 @code {
-    private List<User>? users;
+    // --- Datos en memoria ---
+    private List<User> users = new();
+
+    private User CurrentUser = new();
+    private bool IsEditing = false;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,5 +111,54 @@ else
             Console.WriteLine($"Error al obtener los usuarios: {ex.Message}");
         }
 
+    }
+
+    // --- Métodos CRUD ---
+    private void SaveUser()
+    {
+        if (IsEditing)
+        {
+            var user = users.FirstOrDefault(u => u.usu_cedulaP == CurrentUser.usu_cedulaP);
+            if (user != null)
+            {
+                user.usu_nombres = CurrentUser.usu_nombres;
+                user.usu_correo = CurrentUser.usu_correo;
+            }
+        }
+        else
+        {
+            CurrentUser.usu_cedulaP = users.Any() ? users.Max(u => u.usu_cedulaP) + "1" : "1";
+            users.Add(new User
+                {
+                    usu_cedulaP = CurrentUser.usu_cedulaP,
+                    usu_nombres = CurrentUser.usu_nombres,
+                    usu_correo = CurrentUser.usu_correo
+                });
+        }
+
+        CancelEdit();
+    }
+
+    private void EditUser(User user)
+    {
+        CurrentUser = new User
+            {
+                usu_cedulaP = user.usu_cedulaP,
+                usu_nombres = user.usu_nombres,
+                usu_correo = user.usu_correo
+            };
+        IsEditing = true;
+    }
+
+    private void DeleteUser(User user)
+    {
+        users.Remove(user);
+    }
+
+
+    private void CancelEdit()
+    {
+        CurrentUser = new User();
+        IsEditing = false;
     }
 }

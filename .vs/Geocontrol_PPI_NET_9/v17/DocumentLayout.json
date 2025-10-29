@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\",
+  "WorkspaceRootPath": "D:\\Politecnico\\GeoControl_PPI_2025\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{57677CCC-866A-48A5-834B-056C7C37EA25}|Geocontrol_PPI_NET_9.AppHost\\Geocontrol_PPI_NET_9.AppHost.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{57677CCC-866A-48A5-834B-056C7C37EA25}|Geocontrol_PPI_NET_9.AppHost\\Geocontrol_PPI_NET_9.AppHost.csproj|solutionrelative:geocontrol_ppi_net_9.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\politecnico\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\components\\pages\\users.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\components\\pages\\users.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,47 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AppHost.cs",
-              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
-              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
-              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
-              "RelativeToolTip": "Geocontrol_PPI_NET_9.AppHost\\AppHost.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T20:42:27.362Z",
+              "Title": "Users.razor",
+              "DocumentMoniker": "D:\\Politecnico\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Users.razor",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Users.razor",
+              "ToolTip": "D:\\Politecnico\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Users.razor",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Users.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-29T22:40:06.704Z",
               "EditorCaption": ""
             }
           ]
