@@ -119,7 +119,7 @@
 
         if (!this.polygons || this.polygons.length === 0) {
             console.warn("⚠️ No hay polígonos cargados para validar.");
-            return false;
+            return 0;
         }
 
         const lat = currentLatitude;
@@ -158,7 +158,7 @@ async function startTrackingLocation() {
             (pos) => {
                 const lat = pos.coords.latitude;
                 const lng = pos.coords.longitude;
-                DotNet.invokeMethodAsync('BlazorAppDemo', 'UpdateMapPosition', lat, lng);
+                DotNet.invokeMethodAsync('Geocontrol_PPI_NET_9.Web', 'UpdateMapPosition', lat, lng);
             },
             (error) => console.error('Error en seguimiento:', error),
             { enableHighAccuracy: true }

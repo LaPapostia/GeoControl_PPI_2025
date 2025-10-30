@@ -1,6 +1,7 @@
 using Geocontrol_PPI_NET_9.Web.Components;
 using Geocontrol_PPI_NET_9.Web.Services;
 using Geocontrol_PPI_NET_9.Web.Services.Auth;
+using Geocontrol_PPI_NET_9.Web.Services.Mail;
 using Geocontrol_PPI_NET_9.Web.Services.Notations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,20 +20,27 @@ builder.Services.AddServerSideBlazor()
         options.DetailedErrors = true;
     });
 
+builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSingleton<MailService>();
+
+builder.Services.AddHttpClient<AuthApiService>(client =>
+{
+    // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+    // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+    client.BaseAddress = new("https+http://apiservice");
+});
 builder.Services.AddHttpClient<UserApiService>(client =>
     {
         // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://apiservice");
     });
-
 builder.Services.AddHttpClient<ZonesApiService>(client =>
 {
     // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
     // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
     client.BaseAddress = new("https+http://apiservice");
 });
-
 builder.Services.AddHttpClient<NotationApiService>(client =>
 {
     // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.

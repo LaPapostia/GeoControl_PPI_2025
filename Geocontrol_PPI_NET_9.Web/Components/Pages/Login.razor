@@ -1,0 +1,83 @@
+﻿@page "/"
+@inject AuthService Auth
+@inject IJSRuntime JS
+@rendermode InteractiveServer
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@using System.ComponentModel.DataAnnotations
+@using Geocontrol_PPI_NET_9.Models.Auth
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+
+@inject AuthApiService LoginService
+@inject NavigationManager Navigation
+
+<PageTitle>Geocontrol</PageTitle>
+
+<div class="login-container">
+    <div class="login-card">
+        <h2 class="login-title">Bienvenido a GeoControl</h2>
+
+        <EditForm Model="@authModel" OnValidSubmit="@HandleLogin">
+            <div class="mb-3">
+                <InputText @bind-Value="authModel.Identification" class="form-control" placeholder="Usuario" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="authModel.Password" type="password" class="form-control" placeholder="Contraseña" />
+            </div>
+            <!-- Link debajo de la contraseña -->
+            <div class="text-sm text-center mt-2">
+                <a href="/forgot-password" class="text-blue-400 hover:underline">
+                    ¿Olvidaste tu Contraseña?
+                </a>
+            </div>
+            <button type="submit" class="btn btn-login">Ingresar</button>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(Message))
+        {
+            <p class="text-center mt-4 font-medium @(IsError ? "text-red-600" : "text-green-600")">@Message</p>
+        }
+    </div>
+</div>
+
+@code {
+    private Authentication authModel = new();
+    private string Message = string.Empty;
+    private bool IsError = false;
+
+    protected override void OnInitialized()
+    {
+        Auth.Logout();
+    }
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            Message = "Verificando...";
+
+            AuthResult result = await LoginService.Autentication(authModel);
+
+            if (result.Result)
+            {
+                // Aquí pondrías tu lógica de autenticación
+                await JS.InvokeVoidAsync("alert", "✅ Login exitoso");
+                Auth.Login(authModel.Identification);
+                Navigation.NavigateTo("/map");
+                IsError = false;
+            }
+            else
+            {
+                Message = "❌ Usuario o contraseña incorrectos.";
+                IsError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            Message = $"Error al autenticar: {ex.Message}";
+        }
+    }
+}

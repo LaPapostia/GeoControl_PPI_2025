@@ -55,3 +55,6 @@ nunit-*.xml
 
 #LocalFiles
 bd_data/
+
+#Data from .vs
+.vs/
