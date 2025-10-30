@@ -49,7 +49,7 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
                     commandType: CommandType.StoredProcedure,
                     param: parameters
                 );
-                return Ok(new AuthResult () { Result = resultAuth.FirstOrDefault() });
+                return Ok(new AuthResult() { Result = resultAuth.FirstOrDefault() });
             }
             catch (Exception ex)
             {

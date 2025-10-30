@@ -18,6 +18,10 @@
             </NavLink>
             @if (Auth.IsLoggedIn)
             {
+                <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Perfil
+                </NavLink>
+
                 <NavLink class="nav-link" href="/map" Match="NavLinkMatch.All">
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Mapa
                 </NavLink>

@@ -1,4 +1,5 @@
-﻿@using Geocontrol_PPI_NET_9.Web.Services
+﻿@using Geocontrol_PPI_NET_9.Web.Components.Common
+@using Geocontrol_PPI_NET_9.Web.Services
 @inherits LayoutComponentBase
 
 @inject AuthService authService
@@ -24,3 +25,6 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+
+<LoadingOverlay />

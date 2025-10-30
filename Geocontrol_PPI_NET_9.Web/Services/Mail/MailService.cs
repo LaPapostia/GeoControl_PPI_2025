@@ -25,20 +25,21 @@ namespace Geocontrol_PPI_NET_9.Web.Services.Mail
                     Subject = $"Geocontrol - Cambio Contraseña",
                     Title = $"Autorización de Cambio de Contraseña",
                     Greeting = "Estimado usuario,",
-                    MainContent = $"Se va arealizar un cambio de contraseña para el aplicativo de Geocontrol",
+                    MainContent = $"Se solicitó un cambio de contraseña para el aplicativo de Geocontrol a las: {DateTime.Now:dd-MM-yyyy hh:mm:ss}",
                     HighlightCode = code,
-                    Instructions = "Por favor utilice este código para autorizar la transacción:",
+                    Instructions = "Por favor utilice este código para autorizar la transacción: \n" +
+                    "IMPORTANTE: Si usted no fue la persona que lo solicitó por favor haga caso omiso al mensaje y no comparta el código con nadie.",
                     FooterNotice = "Este es un mensaje automático, por favor no responda a este correo.",
-                    CompanyName = "Geocontrol",
+                    CompanyName = "Aplicativo de Gestión de Localidad - Geocontrol",
                     ExpirationDate = expirationDate.ToString("dd-MM-yyyy hh:mm:ss"),
-                    Remitter = "Geocontrol",
+                    Remitter = "Aplicativo de Gestión de Localidad - Geocontrol",
                     Note = note
                 };
 
                 var (isSuccess, errorMessage) = await EmailTemplated.SendTemplatedEmail
                 (
                     ["juanes041387@gmail.com"],
-                    null,
+                    [],
                     emailModel
                 );
 

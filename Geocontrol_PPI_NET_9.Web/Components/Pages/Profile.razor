@@ -1,0 +1,137 @@
+﻿@page "/profile"
+
+@using System.ComponentModel.DataAnnotations
+@using Geocontrol_PPI_NET_9.Models.Auth
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
+
+@inject IJSRuntime JS
+@inject UserApiService userApiService
+@inject AuthService authService
+@inject LoadingService loadingService
+
+<div class="profile-container">
+	<div class="profile-card">
+		<h2 class="profile-title">Perfil de Usuario</h2>
+
+		<!-- Información del perfil -->
+		<div class="profile-info">
+			<div class="info-item">
+				<label>Nombre:</label>
+				<span>@UserProfile.usu_nombres</span>
+			</div>
+			<div class="info-item">
+				<label>Apellidos:</label>
+				<span>@UserProfile.usu_apellidos</span>
+			</div>
+			<div class="info-item">
+				<label>Correo:</label>
+				<span>@UserProfile.usu_correo</span>
+			</div>
+			<div class="info-item">
+				<label>Fecha de creación:</label>
+				<span>@DateTime.Now.ToString("dd/MM/yyyy")</span>
+			</div>
+		</div>
+
+		<hr class="divider" />
+
+		<!-- Formulario para cambiar contraseña -->
+		<h3 class="section-title">Cambiar Contraseña</h3>
+		<EditForm Model="@passwordModel" OnValidSubmit="@HandlePasswordChange">
+			<DataAnnotationsValidator />
+			<ValidationSummary />
+
+			<div class="mb-3">
+				<InputText @bind-Value="passwordModel.CurrentPassword" type="password" class="form-control" placeholder="Contraseña actual" />
+			</div>
+			<div class="mb-3">
+				<InputText @bind-Value="passwordModel.NewPassword" type="password" class="form-control" placeholder="Nueva contraseña" />
+			</div>
+			<div class="mb-3">
+				<InputText @bind-Value="passwordModel.ConfirmPassword" type="password" class="form-control" placeholder="Confirmar contraseña" />
+			</div>
+
+			<button type="submit" class="btn btn-login">Actualizar Contraseña</button>
+		</EditForm>
+
+		@if (!string.IsNullOrEmpty(Message))
+		{
+			<p class="text-center mt-4 font-medium @(IsError ? "text-red-600" : "text-green-600")">@Message</p>
+		}
+	</div>
+</div>
+
+@code {
+
+	private User UserProfile = new();
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		try
+		{
+			await loadingService.ShowAsync("Cargando Información...");
+			UserProfile = await userApiService.GetUserAsync(authService.UserLogged);
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "X Error al cargar la información del usuario");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+
+	private ChangePasswordModel passwordModel = new();
+
+	private string Message = string.Empty;
+	private bool IsError = false;
+
+	private async Task HandlePasswordChange()
+	{
+		try
+		{
+			if (passwordModel.NewPassword != passwordModel.ConfirmPassword)
+			{
+				Message = "Las contraseñas no coinciden.";
+				IsError = true;
+				return;
+			}
+
+			// Aquí iría la lógica real para cambiar la contraseña (API o servicio)
+			await Task.Delay(1000);
+
+			Message = "Contraseña actualizada correctamente.";
+			IsError = false;
+			passwordModel = new(); // Limpia el formulario
+
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "X Error al cambiar la contraseña");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+
+	public class ChangePasswordModel
+	{
+		[Required(ErrorMessage = "La contraseña actual es obligatoria")]
+		public string CurrentPassword { get; set; } = string.Empty;
+
+		[Required(ErrorMessage = "La nueva contraseña es obligatoria")]
+		[MinLength(6, ErrorMessage = "Debe tener al menos 6 caracteres")]
+		public string NewPassword { get; set; } = string.Empty;
+
+		[Required(ErrorMessage = "Debe confirmar la contraseña")]
+		[Compare(nameof(NewPassword), ErrorMessage = "Las contraseñas no coinciden")]
+		public string ConfirmPassword { get; set; } = string.Empty;
+	}
+}

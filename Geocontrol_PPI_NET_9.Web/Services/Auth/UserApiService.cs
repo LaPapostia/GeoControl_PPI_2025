@@ -35,4 +35,27 @@ public class UserApiService
             throw;
         }
     }
+
+    /// <summary>
+    /// Method to obtain a single user in base of the identification id
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task<User> GetUserAsync(string Identification, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/User/{Identification}", cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync(cancellationToken);
+            var users = JsonConvert.DeserializeObject<User>(json);
+            return users ?? throw new Exception("Respuesta vacía");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching users: {ex.Message}");
+            throw;
+        }
+    }
 }

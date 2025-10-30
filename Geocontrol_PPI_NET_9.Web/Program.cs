@@ -1,6 +1,7 @@
 using Geocontrol_PPI_NET_9.Web.Components;
 using Geocontrol_PPI_NET_9.Web.Services;
 using Geocontrol_PPI_NET_9.Web.Services.Auth;
+using Geocontrol_PPI_NET_9.Web.Services.Loading;
 using Geocontrol_PPI_NET_9.Web.Services.Mail;
 using Geocontrol_PPI_NET_9.Web.Services.Notations;
 
@@ -22,6 +23,7 @@ builder.Services.AddServerSideBlazor()
 
 builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<MailService>();
+builder.Services.AddSingleton<LoadingService>();
 
 builder.Services.AddHttpClient<AuthApiService>(client =>
 {

@@ -2,11 +2,13 @@
 @using Geocontrol_PPI_NET_9.Models.Auth
 @using Geocontrol_PPI_NET_9.Web.Services
 @using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
 @rendermode InteractiveServer
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
 @inject UserApiService GeocontrolApi
+@inject LoadingService loadingService
 
 <PageTitle>Users</PageTitle>
 
@@ -101,6 +103,7 @@
     {
         try
         {
+            await loadingService.ShowAsync("Cargando Información...");
             UserApiService service = ServiceLocator.Instance?.GetRequiredService<UserApiService>() ??
                 throw new Exception("Error al obtener los datos del servicio instanciado");
             if (service is not null)
@@ -109,6 +112,10 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error al obtener los usuarios: {ex.Message}");
+        }
+        finally
+        {
+            await loadingService.HideAsync();
         }
 
     }

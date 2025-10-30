@@ -1,0 +1,29 @@
+﻿@using Geocontrol_PPI_NET_9.Web.Services.Loading
+
+@inject LoadingService LoadingService
+
+@if (LoadingService.IsVisible)
+{
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">@LoadingService.Message</p>
+    </div>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        LoadingService.OnChangeAsync += HandleChange;
+    }
+
+    private async Task HandleChange()
+    {
+        // Forzar renderizado seguro en el hilo principal
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        LoadingService.OnChangeAsync -= HandleChange;
+    }
+}

@@ -1,4 +1,8 @@
 ﻿@page "/reports"
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
+
+@inject LoadingService loadingService
+@inject JSRuntime JS
 
 <h3>Reporte - Power BI (Mock)</h3>
 
@@ -19,3 +23,23 @@
         </div>
     </div>
 </div>
+
+@code{
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		try
+		{
+			await loadingService.ShowAsync("Cargando Información...");
+			
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "X Error al cargar la información del reporte");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+}

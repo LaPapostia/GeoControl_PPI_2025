@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Geocontrol_PPI_NET_9.Models;
 using Geocontrol_PPI_NET_9.Models.Auth;
 using Geocontrol_PPI_NET_9.Models.Notations;
 using Microsoft.AspNetCore.Mvc;
@@ -79,7 +80,7 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
                     commandType: CommandType.StoredProcedure,
                     param: parameters);
 
-                return Ok(new { result = result.FirstOrDefault() });
+                return Ok(new StandardResponse { result = result.FirstOrDefault() });
             }
             catch (Exception ex)
             {

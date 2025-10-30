@@ -2,8 +2,10 @@
 @using Geocontrol_PPI_NET_9.Models.Notations
 @using Geocontrol_PPI_NET_9.Web.Services
 @using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
 @using Geocontrol_PPI_NET_9.Web.Services.Notations
 @using Newtonsoft.Json
+
 @rendermode InteractiveServer
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
@@ -11,6 +13,7 @@
 @inject IJSRuntime JS
 @inject UserApiService GeocontrolApi
 @inject AuthService Auth
+@inject LoadingService loadingService
 
 <PageTitle>Inicio</PageTitle>
 
@@ -189,7 +192,7 @@
 
     #region Notation Properties
     private List<Zone> listZones = [];
-    private List<Notation> resultNotations;
+    private List<Notation> resultNotations = [];
     #endregion
     #endregion
 
@@ -205,6 +208,8 @@
         {
             if (firstRender)
             {
+                await loadingService.ShowAsync("Verificando Permisos de Geolocalización...");
+
                 if (await JS.InvokeAsync<bool>("requestGeolocationPermission"))
                 {
                     listZones = [];
@@ -213,6 +218,7 @@
                     ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
                         throw new Exception("Error al obtener los datos del servicio instanciado");
 
+                    await loadingService.ShowAsync("Obteniendo Zonas...");
                     if (service is not null)
                         listZones = await service.ObtainZones();
 
@@ -221,7 +227,7 @@
                     foreach (var zone in listZones)
                     {
                         List<Coords> auxCoords = [];
-                        foreach (var coord in JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas))
+                        foreach (var coord in (JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas) ?? []))
                         {
                             auxCoords.Add(new Coords
                             {
@@ -233,6 +239,7 @@
                         coords.Add(auxCoords);
                     }
 
+                    await loadingService.ShowAsync("Inicializando Mapa...");
                     await JS.InvokeVoidAsync("googleMapsInterop.initMap", "map", 6.185, -75.656, 16, coords.ToArray());
                     await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
                 }
@@ -248,6 +255,10 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
+        }
+        finally
+        {
+            await loadingService.HideAsync();
         }
     }
     #endregion
@@ -277,6 +288,7 @@
         catch (Exception ex)
         {
             Console.WriteLine("Error al seguir el trazo de la persona");
+            Console.WriteLine(ex.Message);
         }
 
     }
@@ -384,6 +396,8 @@
     {
         try
         {
+            await loadingService.ShowAsync("Generando Zona...");
+
             zone.zonmar_coordenadas = polygonJson;
 
             ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
@@ -398,13 +412,33 @@
             Console.WriteLine(ex.Message);
             await JS.InvokeVoidAsync("alert", "X Error al guardar la zona.");
         }
+        finally
+        {
+            await loadingService.HideAsync();
+        }
     }
     #endregion
 
     #region Notation Modal Logic
-    private void ShowNotationModal()
+    private async Task ShowNotationModal()
     {
-        IsNotationModalOpen = true;
+        try
+        {
+            var positionResult = await ValidateCurrentPosition();
+
+            if (!positionResult.inZone)
+            {
+                await JS.InvokeVoidAsync("alert", "No se encuentra dentro de una zona de marcación válida");
+                return;
+            }
+
+            IsNotationModalOpen = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await JS.InvokeVoidAsync("alert", "X Error al cargar el archivo");
+        }
     }
 
     private void CloseNotationModal()
@@ -431,6 +465,8 @@
     {
         try
         {
+            await loadingService.ShowAsync("Generando Marcación...");
+
             var positionResult = await ValidateCurrentPosition();
 
             if (!positionResult.inZone)
@@ -469,6 +505,10 @@
         {
             Console.WriteLine(ex.Message);
             await JS.InvokeVoidAsync("alert", "✅ Error al guardar la marcación.");
+        }
+        finally
+        {
+            await loadingService.HideAsync();
         }
     }
     #endregion
