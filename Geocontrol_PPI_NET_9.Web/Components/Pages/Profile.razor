@@ -71,9 +71,13 @@
 	{
 		try
 		{
-			await loadingService.ShowAsync("Cargando Información...");
-			UserProfile = await userApiService.GetUserAsync(authService.UserLogged);
-			await InvokeAsync(StateHasChanged);
+			if (firstRender)
+			{
+				await loadingService.ShowAsync("Cargando Información...");
+				UserProfile = await userApiService.GetUserAsync(authService.UserLogged);
+				StateHasChanged();
+			}
+			
 		}
 		catch (Exception ex)
 		{

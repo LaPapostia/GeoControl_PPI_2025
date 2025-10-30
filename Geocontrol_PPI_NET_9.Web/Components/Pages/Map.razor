@@ -247,9 +247,9 @@
                 {
                     throw new Exception("Permiso de geolocalización denegado.");
                 }
-            }
 
-            await RefreshNotations();
+                await RefreshNotations();
+            }
 
         }
         catch (Exception ex)
@@ -263,36 +263,7 @@
     }
     #endregion
 
-    private async Task RefreshNotations()
-    {
-        try
-        {
-            /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
-            NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
-                throw new Exception("Error al obtener los datos del servicio instanciado");
-            resultNotations = await notationService.ObtainNotations(null, null, null, null);
-            await InvokeAsync(StateHasChanged);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener los registros de marcación: {ex.Message}");
-        }
-    }
-
-    private async Task StartTrackingLocation()
-    {
-        try
-        {
-            await JS.InvokeVoidAsync("startTrackingLocation");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error al seguir el trazo de la persona");
-            Console.WriteLine(ex.Message);
-        }
-
-    }
-
+    #region Map Logic
     private async Task ToggleEditMode()
     {
         try
@@ -364,7 +335,9 @@
         }
     }
 
-    #region Zone Modal Logic
+    #endregion
+
+    #region Zone Logic
     private void ShowZoneModal()
     {
         IsZoneModalOpen = true;
@@ -419,7 +392,38 @@
     }
     #endregion
 
-    #region Notation Modal Logic
+    #region Notation Logic
+    
+    private async Task RefreshNotations()
+    {
+        try
+        {
+            /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+            NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
+                throw new Exception("Error al obtener los datos del servicio instanciado");
+            resultNotations = await notationService.ObtainNotations(null, null, null, null);
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener los registros de marcación: {ex.Message}");
+        }
+    }
+
+    private async Task StartTrackingLocation()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("startTrackingLocation");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al seguir el trazo de la persona");
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
     private async Task ShowNotationModal()
     {
         try
@@ -512,5 +516,4 @@
         }
     }
     #endregion
-
 }

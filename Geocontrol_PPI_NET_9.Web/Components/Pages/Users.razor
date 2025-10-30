@@ -3,6 +3,7 @@
 @using Geocontrol_PPI_NET_9.Web.Services
 @using Geocontrol_PPI_NET_9.Web.Services.Auth
 @using Geocontrol_PPI_NET_9.Web.Services.Loading
+
 @rendermode InteractiveServer
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
@@ -11,14 +12,9 @@
 @inject LoadingService loadingService
 
 <PageTitle>Users</PageTitle>
-
 <h1 style="color:white">Usuarios</h1>
-
-
-
 <div class="container mt-4">
 
-    <!-- Formulario para Agregar / Editar -->
     <div class="card mb-4">
         <div class="card-header bg-dark text-white">
             @(IsEditing ? "Editar Usuario" : "Agregar Usuario")
@@ -44,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Tabla de usuarios -->
     <div class="card">
         <div class="card-header bg-dark text-white">
             Lista de Usuarios
@@ -92,7 +87,6 @@
 </div>
 
 @code {
-    // --- Datos en memoria ---
     private List<User> users = new();
 
     private User CurrentUser = new();
@@ -120,7 +114,6 @@
 
     }
 
-    // --- Métodos CRUD ---
     private void SaveUser()
     {
         if (IsEditing)
