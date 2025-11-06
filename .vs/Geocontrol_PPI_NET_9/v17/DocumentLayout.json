@@ -3,12 +3,28 @@
   "WorkspaceRootPath": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\services\\mail\\mailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\services\\mail\\mailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\components\\pages\\map.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\components\\pages\\map.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\components\\pages\\forgotpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\components\\pages\\forgotpassword.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\components\\pages\\auth\\profile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\components\\pages\\auth\\profile.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\wwwroot\\css\\map.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\wwwroot\\css\\map.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|d:\\0_politecnico\\profundizaciondesarrollo\\geocontrol_ppi_2025\\geocontrol_ppi_net_9.web\\wwwroot\\css\\layout.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{80FA92F7-E3B8-2E6A-BFC4-9D740D09214D}|Geocontrol_PPI_NET_9.Web\\Geocontrol_PPI_NET_9.Web.csproj|solutionrelative:geocontrol_ppi_net_9.web\\wwwroot\\css\\layout.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -51,27 +67,79 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MailService.cs",
-              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Services\\Mail\\MailService.cs",
-              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\Services\\Mail\\MailService.cs",
-              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Services\\Mail\\MailService.cs",
-              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\Services\\Mail\\MailService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:42:21.942Z",
+              "Title": "Map.razor",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Map.razor",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Map.razor",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Map.razor",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Map.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-06T20:54:58.99Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Map.css",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Map.css",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Map.css",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Map.css",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Map.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-06T20:54:51.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Main.css",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Main.css",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Main.css",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Main.css",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Main.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-06T20:56:28.195Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ForgotPassword.razor",
-              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\ForgotPassword.razor",
-              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\ForgotPassword.razor",
-              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\ForgotPassword.razor",
-              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\ForgotPassword.razor",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAcwF0AAAANAAAAAAAAAA==",
+              "Title": "Profile.razor",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Auth\\Profile.razor",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Auth\\Profile.razor",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Auth\\Profile.razor",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\Components\\Pages\\Auth\\Profile.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-30T16:47:07.874Z",
+              "WhenOpened": "2025-11-06T20:40:00.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Profile.css",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Profile.css",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Profile.css",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Profile.css",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Profile.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-06T20:40:28.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Layout.css",
+              "DocumentMoniker": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Layout.css",
+              "RelativeDocumentMoniker": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Layout.css",
+              "ToolTip": "D:\\0_Politecnico\\ProfundizacionDesarrollo\\GeoControl_PPI_2025\\Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Layout.css",
+              "RelativeToolTip": "Geocontrol_PPI_NET_9.Web\\wwwroot\\css\\Layout.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-06T20:00:05.829Z",
               "EditorCaption": ""
             }
           ]

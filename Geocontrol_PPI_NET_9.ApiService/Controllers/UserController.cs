@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Geocontrol_PPI_NET_9.Models;
 using Geocontrol_PPI_NET_9.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -27,39 +28,6 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-
-
-        [HttpPost]
-        [Route("api/Login")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Autenticate([FromBody] Authentication request)
-        {
-            try
-            {
-                var parameters = new Dictionary<string, object>()
-                {
-                    { "Cedula", request.Identification },
-                    { "Contrasenia", request.Password}
-                };
-
-                var resultAuth = await _connection.QueryAsync<bool>(
-                    "pa_validar_usuario",
-                    commandType: CommandType.StoredProcedure,
-                    param: parameters
-                );
-                return Ok(new AuthResult() { Result = resultAuth.FirstOrDefault() });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
-            finally
-            {
-                if (_connection.State == ConnectionState.Open)
-                    await _connection.CloseAsync();
-            }
         }
 
         [HttpGet]
@@ -176,6 +144,37 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
                 );
 
                 return Ok(new { message = "Operación ejecutada correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open)
+                    await _connection.CloseAsync();
+            }
+        }
+
+        [HttpPost]
+        [Route("api/[controller]/ChangePassword")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ChangePassword([FromBody] NewPassword newPassword)
+        {
+            try
+            {
+                var parameters = new Dictionary<string, object>()
+                {
+                    { "Identificacion", newPassword.usu_identification},
+                    { "Contrasenia", newPassword.usu_contrasenia_nueva}
+                };
+
+                var result = await _connection.QueryAsync<bool>("pa_usuario_cambiar_contrasenia",
+                    commandType: CommandType.StoredProcedure,
+                    param: parameters);
+
+                return Ok(new StandardResponse { result = result.FirstOrDefault() });
             }
             catch (Exception ex)
             {

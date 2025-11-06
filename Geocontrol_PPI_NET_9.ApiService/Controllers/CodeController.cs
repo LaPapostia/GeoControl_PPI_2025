@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Geocontrol_PPI_NET_9.ApiService.Controllers
 {
-    public class AuthCodeController : Controller
+    public class CodeController : Controller
     {
         #region Attributes
         private readonly SqlConnection _connection;
@@ -23,7 +23,7 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
         /// Controlador de autorización de códigos
         /// </summary>
         /// <param name="connection"></param>
-        public AuthCodeController(SqlConnection connection)
+        public CodeController(SqlConnection connection)
         {
             /// Assign the first parameter to the private attribute
             _connection = connection;
@@ -92,5 +92,6 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
                     await _connection.CloseAsync();
             }
         }
+
     }
 }

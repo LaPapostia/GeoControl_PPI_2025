@@ -4,6 +4,8 @@ using Geocontrol_PPI_NET_9.Web.Services.Auth;
 using Geocontrol_PPI_NET_9.Web.Services.Loading;
 using Geocontrol_PPI_NET_9.Web.Services.Mail;
 using Geocontrol_PPI_NET_9.Web.Services.Notations;
+using Geocontrol_PPI_NET_9.Web.Services.Permission;
+using Geocontrol_PPI_NET_9.Web.Services.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,17 @@ builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<MailService>();
 builder.Services.AddSingleton<LoadingService>();
 
+/// Navigation services
+builder.Services.AddSingleton<PermissionService>();
+builder.Services.AddScoped<NavigationGuardService>();
+
 builder.Services.AddHttpClient<AuthApiService>(client =>
+{
+    // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
+    // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
+    client.BaseAddress = new("https+http://apiservice");
+});
+builder.Services.AddHttpClient<CodeApiService>(client =>
 {
     // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
     // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.

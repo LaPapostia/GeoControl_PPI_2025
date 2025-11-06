@@ -1,0 +1,14 @@
+﻿
+.banner-layout {
+    width: 100% !important;
+    height: 4em !important;
+    background-color: #4B3535 !important;
+    min-height: 4em !important;
+    padding-bottom: 0.5em !important;
+}
+
+@media (max-width: 992px) {
+    .banner-layout {
+        display: none !important;
+    }
+}

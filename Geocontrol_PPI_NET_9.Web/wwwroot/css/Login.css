@@ -1,32 +1,25 @@
 ﻿/* Contenedor centrado */
-html body .login-container {
+.login-container {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     min-height: calc(100vh - 70px) !important;
-    background-color: #0d1b2a !important; /* azul oscuro */
 }
 
 /* Caja del login */
-html body .login-container .login-card {
-background: #1b263b !important; /* tono más claro */
-padding: 2rem !important;
-border-radius: 12px !important;
-box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
-width: 100% !important;
-max-width: 350px !important;
-text-align: center !important;
-}
-
-/* Título */
-html body .login-container .login-card .login-title {
-    color: #e0e1dd !important;
-    margin-bottom: 1.5rem !important;
+.login-card {
+    background: #F2E9E4 !important;
+    padding: 2rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+    width: 100% !important;
+    max-width: 350px !important;
+    text-align: center !important;
 }
 
 /* Botón */
-html body .login-container .login-card .btn-login {
-    background-color: #00b4d8 !important;
+.btn-login {
+    background-color: #222222 !important;
     color: #fff !important;
     border: none !important;
     padding: 0.6rem 1.2rem !important;
@@ -34,8 +27,15 @@ html body .login-container .login-card .btn-login {
     width: 100% !important;
     font-weight: bold !important;
     transition: background 0.3s !important;
+    margin-top: 3em;
 }
 
-    html body .login-container .login-card .btn-login:hover {
-        background-color: #0096c7 !important;
-    }
+.btn-login:hover {
+    background-color: #9A8C98 !important;
+}
+
+.forgot-pass {
+    margin-top: 0em !important;
+    font-size: initial !important;
+    color: rgba(0,0,0,0.5) !important;
+}

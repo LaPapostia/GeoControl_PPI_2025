@@ -1,37 +1,41 @@
 ﻿@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
 
 @inject AuthService Auth
+@inject LoadingService loadingService
 
-<div class="top-row ps-3 navbar navbar-dark">
+<div class="top-row navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">GeoControl App</a>
+        <h1 class="navbar-brand">GeoControl App</h1>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<input type="checkbox" title="Menu de Navegación" class="navbar-toggler" />
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> @LoginText
-            </NavLink>
+        <div class="nav-item">
+                <NavLink class="nav-link-text" href="/" Match="NavLinkMatch.All" @onclick="Logout">
+                    <span class="bi bi-house-door nav-link-icon" aria-hidden="true"></span>
+                 @LoginText
+                </NavLink>
+            
             @if (Auth.IsLoggedIn)
             {
-                <NavLink class="nav-link" href="/profile" Match="NavLinkMatch.All">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Perfil
+                <NavLink class="nav-link-text" href="/profile" Match="NavLinkMatch.All">
+                    <span class="bi bi-list nav-link-icon" aria-hidden="true"></span> Perfil
                 </NavLink>
 
-                <NavLink class="nav-link" href="/map" Match="NavLinkMatch.All">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Mapa
+                <NavLink class="nav-link-text" href="/map" Match="NavLinkMatch.All">
+                    <span class="bi bi-list nav-link-icon" aria-hidden="true"></span> Mapa
                 </NavLink>
 
-                <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Usuarios
+                <NavLink class="nav-link-text" href="/users" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square nav-link-icon" aria-hidden="true"></span> Usuarios
                 </NavLink>
 
-                <NavLink class="nav-link" href="/reports" Match="NavLinkMatch.All">
-                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Reportes
+                <NavLink class="nav-link-text" href="/reports" Match="NavLinkMatch.All">
+                    <span class="bi bi-plus-square nav-link-icon" aria-hidden="true"></span> Reportes
                 </NavLink>
             }
         </div>
@@ -47,11 +51,6 @@
         protected override void OnInitialized()
         {
             Auth.OnChange += AuthStateChanged;
-        }
-
-        private async void AuthStateChanged()
-        {
-            await InvokeAsync(StateHasChanged);
 
             if (Auth.IsLoggedIn)
             {
@@ -63,9 +62,43 @@
             }
         }
 
-        private void Logout()
+        private void AuthStateChanged()
         {
-            Auth.Logout();
+            try
+            {
+                if (Auth.IsLoggedIn)
+                {
+                    LoginText = "Logout";
+                }
+                else
+                {
+                    LoginText = "Login";
+                }
+
+                StateHasChanged();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("NavMenu: Error actualizando el estado de autenticación.");
+            }
+        }
+
+        private async Task Logout()
+        {
+            try
+            {
+                await loadingService.ShowAsync("Cerrando sesión...");
+                await Task.Delay(1000);
+                Auth.Logout();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("NavMenu: Error durante el logout.");
+            }
+            finally
+            {
+                await loadingService.HideAsync();
+            }
         }
 
         public void Dispose()

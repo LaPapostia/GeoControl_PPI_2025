@@ -1,41 +1,75 @@
 ﻿/* Barra superior */
 .top-row.navbar {
-    background: linear-gradient(to right, #000000, #0d1b2a) !important; /* negro a azul oscuro */
-    color: #ffffff !important;
+    background: #4B3535 !important; /* negro a azul oscuro */
+    color: #222222 !important;
+    font-weight: bold !important;
+    min-height: 4em !important;
+    height: 4em !important;
 }
 
 /* Marca (título/brand) */
 .top-row .navbar-brand {
     color: #ffffff !important;
     font-weight: bold !important;
+    font-size: 1.5em !important;
 }
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 1.5em !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
 
 /* Fondo del panel lateral (cuando se usa en modo colapsado) */
 .nav-scrollable {
-    background: #0d1b2a !important; /* azul oscuro */
-    color: #ffffff !important;
+    background: #F2E9E4 !important;
+    color: white !important;
+    min-height: 100vh !important;
 }
 
-    /* Links del menú */
-    .nav-scrollable .nav-link {
-        color: #ffffff !important;
-        transition: color 0.3s ease;
+.nav-item{
+    padding: 0 !important;
+}
+
+.nav-link-text {
+    color: black !important;
+    text-align: center !important;
+    text-decoration: none;
+    font-size: 1.3em;
+    padding:0 !important;
+    
+}
+
+.nav-link-icon {
+    vertical-align: central !important;
+    text-align: center !important;
+}
+
+.nav-link-icon {
+    background-color: transparent !important;
+    color: #222222 !important;
+    width: 2em !important;
+    height: 100% !important;
+}
+
+/* Links del menú */
+.nav-scrollable .nav-link {
+    transition: color 0.3s ease;
+}
+
+    /* Hover en links */
+    .nav-scrollable .nav-link:hover {
+        color: black !important; /* gris claro */
     }
 
-        /* Hover en links */
-        .nav-scrollable .nav-link:hover {
-            color: #adb5bd !important; /* gris claro */
-        }
-
-        /* Link activo (NavLink en Blazor agrega la clase .active automáticamente) */
-        .nav-scrollable .nav-link.active {
-            color: #00b4d8 !important; /* azul cian */
-            font-weight: bold !important;
-            border-left: 3px solid #00b4d8 !important;
-            background-color: rgba(0, 180, 216, 0.1) !important; /* opcional */
-        }
-
-/* Botón toggler */
-.navbar-toggler {
-    filter: invert(1) !important; /* icono claro */
-}
+    /* Link activo (NavLink en Blazor agrega la clase .active automáticamente) */
+    .nav-scrollable .nav-link.active {
+        color: #9A8C98 !important;
+        font-weight: bold !important;
+        border-left: 3px solid #00b4d8 !important;
+        background-color: rgba(0, 180, 216, 0.1) !important; /* opcional */
+    }

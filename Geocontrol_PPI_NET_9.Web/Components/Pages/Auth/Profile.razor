@@ -1,0 +1,151 @@
+﻿@page "/profile"
+
+@using System.ComponentModel.DataAnnotations
+@using Geocontrol_PPI_NET_9.Models.Auth
+@using Geocontrol_PPI_NET_9.Web.Services
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using Geocontrol_PPI_NET_9.Web.Services.Loading
+
+@inject IJSRuntime JS
+@inject AuthService authService
+@inject UserApiService userApiService
+@inject LoadingService loadingService
+
+<div class="main-content-card">
+    <h2 class="title mb-3 text-center">Perfil de Usuario</h2>
+    <hr class="divider" />
+    <!-- Información del perfil -->
+    <div class="profile-info">
+        <div class="info-item">
+            <label>Nombre:</label>
+            <span>@UserProfile.usu_nombres</span>
+        </div>
+        <div class="info-item">
+            <label>Apellidos:</label>
+            <span>@UserProfile.usu_apellidos</span>
+        </div>
+        <div class="info-item">
+            <label>Correo:</label>
+            <span>@UserProfile.usu_correo</span>
+        </div>
+        <div class="info-item">
+            <label>Fecha de creación:</label>
+            <span>@DateTime.Now.ToString("dd/MM/yyyy")</span>
+        </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- Formulario para cambiar contraseña -->
+    <h3 class="section-title mb-3">Cambiar Contraseña</h3>
+    <EditForm Model="@passwordModel" OnValidSubmit="@HandlePasswordChange">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <InputText @bind-Value="passwordModel.usu_contrasenia_vieja" type="password" class="form-control" placeholder="Contraseña actual" autocomplete="new-password" />
+        </div>
+        <div class="mb-3">
+            <InputText @bind-Value="passwordModel.usu_contrasenia_nueva" type="password" class="form-control" placeholder="Nueva contraseña" autocomplete="new-password" />
+        </div>
+        <div class="mb-3">
+            <InputText @bind-Value="passwordModel.usu_contrasenia_nueva2" type="password" class="form-control" placeholder="Confirmar contraseña" autocomplete="new-password" />
+        </div>
+
+        <button type="submit" class="btn btn-login">Actualizar Contraseña</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <p class="mt-4 text-center font-medium @(IsError ? "text-warning" : "text-warning")">@Message</p>
+    }
+</div>
+
+
+@code {
+
+    private User UserProfile = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                await loadingService.ShowAsync("Cargando Información...");
+                UserProfile = await userApiService.GetUserAsync(authService.UserLogged);
+
+                passwordModel = new();
+
+                StateHasChanged();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await JS.InvokeVoidAsync("alert", "X Error al cargar la información del usuario");
+        }
+        finally
+        {
+            await loadingService.HideAsync();
+        }
+    }
+
+    private NewPassword passwordModel = new();
+
+    private string Message = string.Empty;
+    private bool IsError = false;
+
+    private async Task HandlePasswordChange()
+    {
+        try
+        {
+            await loadingService.ShowAsync("Validando contraseña...");
+            await Task.Delay(500);
+
+            var (isValid, message) = ValidateNewPassword();
+
+            if (!isValid)
+            {
+                await JS.InvokeVoidAsync("alert", message);
+                return;
+            }
+
+            await loadingService.ShowAsync("Cambiando contraseña...");
+            await Task.Delay(500);
+
+            passwordModel.usu_identification = authService.UserLogged;
+            if (!await userApiService.UpdatePassword(passwordModel))
+                throw new Exception("No se pudo cambiar la contraseña.");
+
+            Message = "Contraseña actualizada correctamente.";
+            IsError = false;
+            passwordModel = new();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await JS.InvokeVoidAsync("alert", "X Error al cambiar la contraseña");
+        }
+        finally
+        {
+            await loadingService.HideAsync();
+        }
+    }
+
+    private (bool result, string message) ValidateNewPassword()
+    {
+        // Valida que la contraseña contenga numeros y carácteres especiales
+        if (passwordModel.usu_contrasenia_nueva.Length < 8 || !passwordModel.usu_contrasenia_nueva.Any(char.IsDigit)
+            || !passwordModel.usu_contrasenia_nueva.Any(ch => !char.IsLetterOrDigit(ch)))
+            return (false, "La contraseña debe contar con un mínimo de 8 carácteres, contener al menos un número y un carácter especial");
+
+        if (!passwordModel.usu_contrasenia_nueva.Equals(passwordModel.usu_contrasenia_nueva2))
+            return (false, "Las contraseñas deben ser iguales");
+
+
+        return (true, string.Empty);
+    }
+}
