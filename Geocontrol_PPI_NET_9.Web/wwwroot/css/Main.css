@@ -12,7 +12,7 @@ body {
     padding: 1em !important;
     border-radius: 0.7rem;
     width: 100% !important;
-    min-width : 100% !important;
+    min-width: 100% !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     margin-top: 1em !important;
 }
@@ -50,11 +50,78 @@ body {
     font-weight: bold;
 }
 
+/* Estilos de la tabla */
+.table {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    border: none !important;
+}
+
+/* Buttons */
+.btn-secondary {
+    margin-top: 0.5em !important;
+    background: #F2E9E4 !important;
+    border: none !important;
+    color: black !important;
+    width: 100% !important;
+    min-height: 4em !important;
+    height: 4em !important;
+}
+
+.btn-info {
+    background: #F2E9E4 !important;
+    border: none !important;
+    color: black !important;
+    width: 100% !important;
+    margin-top: 0.5em !important;
+    min-height: 3em !important;
+    height: 3em !important;
+}
+
+.btn-danger {
+    background: #F2E9E4 !important;
+    border: none !important;
+    color: black !important;
+    width: 100% !important;
+    margin-top: 0.5em !important;
+    min-height: 3em !important;
+    height: 3em !important;
+}
+
+.btn-app-principal {
+    background: #F2E9E4 !important;
+    border: none !important;
+    color: black !important;
+    width: 100% !important;
+    margin-top: 0.5em !important;
+    min-height: 3em !important;
+    height: 3em !important;
+}
+
+.btn-app-secondary {
+    background: #4B3535 !important;
+    border: none !important;
+    color: white !important;
+    width: 100% !important;
+    margin-top: 0.5em !important;
+    min-height: 3em !important;
+    height: 3em !important;
+}
+
+.btn-app-secondary:hover {
+    background: #C9B4A7 !important;
+    color: black !important;
+}
+
+.btn-app-principal:hover {
+    background: #C9B4A7 !important;
+    color: white !important;
+}
+
 .input-text {
     color: #513E23 !important;
     text-align: left !important;
 }
-
 
 /* Loading Overlay */
 .loading-overlay {

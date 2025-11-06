@@ -52,35 +52,6 @@
     overflow-x: auto;
 }
 
-/* Estilos de la tabla */
-.table {
-    border-radius: 8px !important;
-    overflow: hidden !important;
-    border: none !important;
-}
-
-.btn-secondary {
-    margin-top: 0.5em !important;
-    background: #F2E9E4 !important;
-    border: none !important;
-    color: black !important;
-    width: 100% !important;
-    min-height: 4em !important;
-    height: 4em !important;
-}
-
-.btn-info {
-    background: #F2E9E4 !important;
-    border: none !important;
-    color: black !important;
-    width: 100% !important;
-    margin-top: 0.5em !important;
-    min-height: 3em !important;
-    height: 3em !important;
-}
-
-
-
 .registers-table-header {
     background: black !important;
     padding-left: 1em !important;

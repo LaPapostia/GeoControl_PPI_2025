@@ -31,7 +31,7 @@
         <div class="mt-1 flex items-center justify-between">
             <h4 class="text-bold">Acciones</h4>
 
-            <button class="btn btn-secondary"
+            <button class="btn btn-app-principal"
                     @onclick="() => ShowNotationModal()">
                 @PositionButtonText
             </button>
@@ -45,7 +45,7 @@
         }
         else if (!resultNotations.Any())
         {
-            <p class="italic text-gray-500">No hay registros disponibles.</p>
+            <p class="italic">No hay registros disponibles.</p>
         }
         else
         {
@@ -68,14 +68,14 @@
             </table>
         }
 
-        <button class="btn btn-info"
+        <button class="btn btn-app-principal"
                 @onclick="RefreshNotations">
             Actualizar registros
         </button>
     </div>
 
 </div>
-<button class="btn btn-danger"
+<button class="btn btn-app-principal"
         @onclick="ToggleEditMode">
     @ToggleButtonText
 </button>

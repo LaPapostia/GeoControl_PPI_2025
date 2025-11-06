@@ -11,10 +11,7 @@
 @inject UserApiService GeocontrolApi
 @inject LoadingService loadingService
 
-<PageTitle>Users</PageTitle>
-<h1 style="color:white">Usuarios</h1>
-<div class="container mt-4">
-
+<div class="main-content-card">
     <div class="card mb-4">
         <div class="card-header bg-dark text-white">
             @(IsEditing ? "Editar Usuario" : "Agregar Usuario")
@@ -39,7 +36,6 @@
             }
         </div>
     </div>
-
     <div class="card">
         <div class="card-header bg-dark text-white">
             Lista de Usuarios
@@ -51,7 +47,7 @@
             }
             else
             {
-                <table class="table table-dark table-striped">
+                <table class="table-dark table-striped table">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -83,7 +79,6 @@
             
         </div>
     </div>
-
 </div>
 
 @code {

@@ -52,7 +52,7 @@
             <InputText @bind-Value="passwordModel.usu_contrasenia_nueva2" type="password" class="form-control" placeholder="Confirmar contraseña" autocomplete="new-password" />
         </div>
 
-        <button type="submit" class="btn btn-login">Actualizar Contraseña</button>
+        <button type="submit" class="btn btn-app-secondary">Actualizar Contraseña</button>
     </EditForm>
 
     @if (!string.IsNullOrEmpty(Message))
@@ -137,6 +137,11 @@
 
     private (bool result, string message) ValidateNewPassword()
     {
+
+        if (!passwordModel.usu_contrasenia_nueva is null 
+        || !passwordModel.usu_contrasenia_nueva is null)
+            return (false, "Las contraseñas deben ser iguales");
+
         // Valida que la contraseña contenga numeros y carácteres especiales
         if (passwordModel.usu_contrasenia_nueva.Length < 8 || !passwordModel.usu_contrasenia_nueva.Any(char.IsDigit)
             || !passwordModel.usu_contrasenia_nueva.Any(ch => !char.IsLetterOrDigit(ch)))
