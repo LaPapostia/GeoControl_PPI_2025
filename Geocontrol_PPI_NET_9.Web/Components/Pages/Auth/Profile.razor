@@ -138,8 +138,9 @@
     private (bool result, string message) ValidateNewPassword()
     {
 
-        if (!passwordModel.usu_contrasenia_nueva is null 
-        || !passwordModel.usu_contrasenia_nueva is null)
+
+        if (passwordModel.usu_contrasenia_nueva is null 
+        || passwordModel.usu_contrasenia_nueva2 is null)
             return (false, "Las contraseñas deben ser iguales");
 
         // Valida que la contraseña contenga numeros y carácteres especiales
