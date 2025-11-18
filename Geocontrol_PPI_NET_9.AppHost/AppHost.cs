@@ -40,6 +40,7 @@ try
 
     /// Assign the API service project
     var apiService = builder.AddProject<Projects.Geocontrol_PPI_NET_9_ApiService>("apiservice")
+        .WithHttpPort
         .WithHttpHealthCheck("/health")
         .WithReference(sql)
         .WaitFor(cache)
@@ -47,7 +48,6 @@ try
 
     /// Assign the web front-end project
     builder.AddProject<Projects.Geocontrol_PPI_NET_9_Web>("webfrontend")
-        .WithExternalHttpEndpoints()
         .WithHttpHealthCheck("/health")
         .WithReference(cache)
         .WaitFor(cache)
