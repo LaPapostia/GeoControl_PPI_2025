@@ -2,7 +2,7 @@ try
 {
     /// Create the builder for the application
     var builder = DistributedApplication.CreateBuilder(args);
-    
+
     /// Define the docker behaviour component
     builder.AddDockerComposeEnvironment("env")
                .WithDashboard(dashboard =>
@@ -19,14 +19,16 @@ try
     //    .WithLifetime(ContainerLifetime.Persistent);
 
     /// Assign the values secrets params
-    var sqlUserParam = builder.AddParameter("sql-user", secret: true);
-    var sqlPasswordParam = builder.AddParameter("sql-pass", secret: true);
-    var sqlConnectionParam = builder.AddParameter("sql-connection", secret: true);
-    var sqlDatabaseParam = builder.AddParameter("sql-database", secret: true);
+    //var sqlUserParam = builder.AddParameter("sql-user", secret: true);
+    //var sqlPasswordParam = builder.AddParameter("sql-pass", secret: true);
+    //var sqlConnectionParam = builder.AddParameter("sql-connection", secret: true);
+    //var sqlDatabaseParam = builder.AddParameter("sql-database", secret: true);
 
     /// Assign the value of the connection string in base of the secret value
-    var sql = builder.AddConnectionString("sql-connection-string", 
-        ReferenceExpression.Create($"Server={sqlConnectionParam};User Id={sqlUserParam};Password={sqlPasswordParam};TrustServerCertificate=True;Initial Catalog={sqlDatabaseParam};"));
+    //var sql = builder.AddConnectionString("sql-connection-string",
+    //    ReferenceExpression.Create($"Server={sqlConnectionParam};User Id={sqlUserParam};Password={sqlPasswordParam};TrustServerCertificate=True;Initial Catalog={sqlDatabaseParam};"));
+
+    var sql = builder.AddConnectionString("sql-connection-string");
     // $"{ReferenceExpression.Create($"Endpoint=http://sql-pass;key={sqlPassword}")}"
 
     //var sqldDacpacProject = builder.AddSqlProject("sql-geocontrol-project")
