@@ -31,9 +31,9 @@ try
     var sql = builder.AddConnectionString("sql-connection-string");
     // $"{ReferenceExpression.Create($"Endpoint=http://sql-pass;key={sqlPassword}")}"
 
-    //var sqldDacpacProject = builder.AddSqlProject("sql-geocontrol-project")
-    //   .WithDacpac("../Geocontrol_PPI_NET_9.Resources/GeoControl.dacpac")
-    //   .WithReference(sql);
+    var sqldDacpacProject = builder.AddSqlProject("sql-geocontrol-project")
+       .WithDacpac("../Geocontrol_PPI_NET_9.Resources/GeoControl.dacpac")
+       .WithReference(sql);
     #endregion
 
     /// Assign the cache project manager
