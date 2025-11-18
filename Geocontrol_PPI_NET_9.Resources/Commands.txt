@@ -15,6 +15,9 @@ dotnet user-secrets set Parameter:sql-connection <secret_pass>
 docker-compose -f docker-compose.sqlserver.yml up -d
 
 
+--- Eliminar la instancia del container
+docker-compose -f docker-compose.sqlserver.yml down -f
+
 
 --- Tests ---
 (Creadte a Docker container for sql manually)

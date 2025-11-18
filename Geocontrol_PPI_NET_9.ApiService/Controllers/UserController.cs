@@ -174,7 +174,7 @@ namespace Geocontrol_PPI_NET_9.ApiService.Controllers
                     commandType: CommandType.StoredProcedure,
                     param: parameters);
 
-                return Ok(new StandardResponse { result = result.FirstOrDefault() });
+                return Ok(new StandardResponse { result = true });
             }
             catch (Exception ex)
             {
