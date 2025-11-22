@@ -15,7 +15,7 @@ namespace Geocontrol_PPI_NET_9.Web.Services.Notations
         }
 
         public async Task<List<Notation>> ObtainNotations(
-            int? identification,
+            string? identification,
             int? zone_id,
             string? start_date,
             string? finish_date,

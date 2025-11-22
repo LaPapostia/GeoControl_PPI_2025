@@ -19,537 +19,537 @@
 
 
 <div class="mapa-layout main-content-card">
-    <!-- Columna izquierda -->
-    <div class="mapa-col">
-        <div class="map-container">
-            <div id="map" class="mapa"></div>
-        </div>
-    </div>
+	<!-- Columna izquierda -->
+	<div class="mapa-col">
+		<div class="map-container">
+			<div id="map" class="mapa"></div>
+		</div>
+	</div>
 
-    <!-- Columna derecha: tabla -->
-    <div class="buttons-col">
-        <div class="mt-1 flex items-center justify-between">
-            <h4 class="text-bold">Acciones</h4>
+	<!-- Columna derecha: tabla -->
+	<div class="buttons-col">
+		<div class="mt-1 flex items-center justify-between">
+			<h4 class="text-bold">Acciones</h4>
 
-            <button class="btn btn-app-principal"
-                    @onclick="() => ShowNotationModal()">
-                @PositionButtonText
-            </button>
-        </div>
+			<button class="btn btn-app-principal"
+					@onclick="() => ShowNotationModal()">
+				@PositionButtonText
+			</button>
+		</div>
 
 
-        <h4 class="text-bold mt-4">Registros Actuales</h4>
-        @if (resultNotations is null)
-        {
-            <p>Cargando registros...</p>
-        }
-        else if (!resultNotations.Any())
-        {
-            <p class="italic">No hay registros disponibles.</p>
-        }
-        else
-        {
-            <table class="table min-w-full text-left text-sm">
-                <thead class="registers-table-header">
-                    <tr>
-                        <th>Zona</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody class="registers-table-detail">
-                    @foreach (var item in resultNotations)
-                    {
-                        <tr class="">
-                            <td class="border-b p-2">@item.mar_observacion</td>
-                            <td class="border-b p-2">@item.mar_fecha.ToShortDateString() @item.mar_fecha.ToShortTimeString()</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+		<h4 class="text-bold mt-4">Registros Actuales</h4>
+		@if (resultNotations is null)
+		{
+			<p>Cargando registros...</p>
+		}
+		else if (!resultNotations.Any())
+		{
+			<p class="italic">No hay registros disponibles.</p>
+		}
+		else
+		{
+			<table class="table min-w-full text-left text-sm">
+				<thead class="registers-table-header">
+					<tr>
+						<th>Zona</th>
+						<th>Fecha</th>
+					</tr>
+				</thead>
+				<tbody class="registers-table-detail">
+					@foreach (var item in resultNotations)
+					{
+						<tr class="">
+							<td class="border-b p-2">@item.mar_observacion</td>
+							<td class="border-b p-2">@item.mar_fecha.ToShortDateString() @item.mar_fecha.ToShortTimeString()</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
 
-        <button class="btn btn-app-principal"
-                @onclick="RefreshNotations">
-            Actualizar registros
-        </button>
-    </div>
+		<button class="btn btn-app-principal"
+				@onclick="RefreshNotations">
+			Actualizar registros
+		</button>
+	</div>
 
 </div>
 <button class="btn btn-app-principal"
-        @onclick="ToggleEditMode">
-    @ToggleButtonText
+		@onclick="ToggleEditMode">
+	@ToggleButtonText
 </button>
 
 
 @if (IsNotationModalOpen)
 {
-    <div class="modal-overlay" @onclick="CloseNotationModal">
-        <div class="modal-content" @onclick:stopPropagation="true">
-            <h5>Agregar Observación</h5>
+	<div class="modal-overlay" @onclick="CloseNotationModal">
+		<div class="modal-content" @onclick:stopPropagation="true">
+			<h5>Agregar Observación</h5>
 
-            <div class="info-card">
-                <h4>Zona de Marcación</h4>
-                <p><strong>Estado:</strong> Dentro de la zona</p>
-                <p><strong>Zona:</strong> Parque Central</p>
-                <p><strong>Hora de Entrada:</strong> 08:15 AM</p>
-                <p><strong>Hora de Salida:</strong> 12:30 PM</p>
-            </div>
+			<div class="info-card">
+				<h4>Zona de Marcación</h4>
+				<p><strong>Estado:</strong> Dentro de la zona</p>
+				<p><strong>Zona:</strong> Parque Central</p>
+				<p><strong>Hora de Entrada:</strong> 08:15 AM</p>
+				<p><strong>Hora de Salida:</strong> 12:30 PM</p>
+			</div>
 
-            <EditForm Model="@notation" OnValidSubmit="HandleSubmitNotation">
-                <div class="form-group mb-3">
-                    <label>Observación</label>
-                    <InputTextArea class="form-control" @bind-Value="notation.mar_observacion" />
-                </div>
+			<EditForm Model="@notation" OnValidSubmit="HandleSubmitNotation">
+				<div class="form-group mb-3">
+					<label>Observación</label>
+					<InputTextArea class="form-control" @bind-Value="notation.mar_observacion" />
+				</div>
 
-                <div class="form-group mb-3">
-                    <label>Subir Archivo</label>
-                    <InputFile OnChange="HandleFileChange" />
-                </div>
+				<div class="form-group mb-3">
+					<label>Subir Archivo</label>
+					<InputFile OnChange="HandleFileChange" />
+				</div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" @onclick="CloseNotationModal">Cancelar</button>
-                </div>
-            </EditForm>
-        </div>
-    </div>
+				<div class="d-flex justify-content-end gap-2">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+					<button type="button" class="btn btn-secondary" @onclick="CloseNotationModal">Cancelar</button>
+				</div>
+			</EditForm>
+		</div>
+	</div>
 }
 
 
 @if (IsZoneModalOpen)
 {
-    <div class="modal-overlay" @onclick="CloseZoneModal">
-        <div class="modal-content" @onclick:stopPropagation="true">
-            <h5>Agregar Zona</h5>
+	<div class="modal-overlay" @onclick="CloseZoneModal">
+		<div class="modal-content" @onclick:stopPropagation="true">
+			<h5>Agregar Zona</h5>
 
-            <EditForm Model="@zone" OnValidSubmit="HandleSubmitZone">
-                <div class="form-group mb-3">
-                    <label>Nombre de la zona</label>
-                    <InputText class="form-control" @bind-Value="zone.zonmar_nombre" />
-                </div>
+			<EditForm Model="@zone" OnValidSubmit="HandleSubmitZone">
+				<div class="form-group mb-3">
+					<label>Nombre de la zona</label>
+					<InputText class="form-control" @bind-Value="zone.zonmar_nombre" />
+				</div>
 
-                <div class="form-group mb-3">
-                    <label>Observación</label>
-                    <InputTextArea class="form-control" @bind-Value="zone.zonmar_observacion" />
-                </div>
+				<div class="form-group mb-3">
+					<label>Observación</label>
+					<InputTextArea class="form-control" @bind-Value="zone.zonmar_observacion" />
+				</div>
 
-                <div class="form-group mb-3">
-                    <label>Hora de inicio</label>
-                    <input type="time"
-                           class="form-control"
-                           value="@zone.zonmar_hora_inicio.ToString("HH:mm")"
-                           @onchange="e => UpdateHoraInicio(e.Value?.ToString())" />
-                </div>
+				<div class="form-group mb-3">
+					<label>Hora de inicio</label>
+					<input type="time"
+						   class="form-control"
+						   value="@zone.zonmar_hora_inicio.ToString("HH:mm")"
+						   @onchange="e => UpdateHoraInicio(e.Value?.ToString())" />
+				</div>
 
-                <div class="form-group mb-3">
-                    <label>Hora de fin</label>
-                    <input type="time"
-                           class="form-control"
-                           value="@zone.zonmar_hora_fin.ToString("HH:mm")"
-                           @onchange="e => UpdateHoraFin(e.Value?.ToString())" />
-                </div>
+				<div class="form-group mb-3">
+					<label>Hora de fin</label>
+					<input type="time"
+						   class="form-control"
+						   value="@zone.zonmar_hora_fin.ToString("HH:mm")"
+						   @onchange="e => UpdateHoraFin(e.Value?.ToString())" />
+				</div>
 
 
-                <div class="d-flex justify-content-end mt-4 gap-2">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <button type="button" class="btn btn-secondary" @onclick="CloseZoneModal">Cancelar</button>
-                </div>
-            </EditForm>
-        </div>
-    </div>
+				<div class="d-flex justify-content-end mt-4 gap-2">
+					<button type="submit" class="btn btn-primary">Guardar</button>
+					<button type="button" class="btn btn-secondary" @onclick="CloseZoneModal">Cancelar</button>
+				</div>
+			</EditForm>
+		</div>
+	</div>
 }
 
 
 @code {
 
-    #region Properties
+	#region Properties
 
-    private static Map? _instance;
+	private static Map? _instance;
 
-    #region Notation Modal Properties
-    private bool IsNotationModalOpen = false;
-    private Notation notation = new();
-    private IBrowserFile? uploadedFile;
-    #endregion
+	#region Notation Modal Properties
+	private bool IsNotationModalOpen = false;
+	private Notation notation = new();
+	private IBrowserFile? uploadedFile;
+	#endregion
 
-    #region Zone Modal Properties
-    private bool IsZoneModalOpen = false;
-    private static Zone zone = new()
-    {
-        zonmar_hora_inicio = DateTime.Now,
-        zonmar_hora_fin = DateTime.Now
-    };
-    private string polygonJson = string.Empty;
-    #endregion
+	#region Zone Modal Properties
+	private bool IsZoneModalOpen = false;
+	private static Zone zone = new()
+	{
+		zonmar_hora_inicio = DateTime.Now,
+		zonmar_hora_fin = DateTime.Now
+	};
+	private string polygonJson = string.Empty;
+	#endregion
 
-    #region Button Properties
-    private string ToggleButtonText = "Editar polígonos";
-    private bool ToggleButtonValue = false;
-    private string PositionButtonText = "Generar Marcación";
-    #endregion
+	#region Button Properties
+	private string ToggleButtonText = "Editar polígonos";
+	private bool ToggleButtonValue = false;
+	private string PositionButtonText = "Generar Marcación";
+	#endregion
 
-    #region Notation Properties
-    private List<Zone> listZones = [];
-    private List<Notation> resultNotations = [];
-    #endregion
-    #endregion
+	#region Notation Properties
+	private List<Zone> listZones = [];
+	private List<Notation> resultNotations = [];
+	#endregion
+	#endregion
 
-    #region Inicialization
-    protected override void OnInitialized()
-    {
-        _instance = this;
-    }
+	#region Inicialization
+	protected override void OnInitialized()
+	{
+		_instance = this;
+	}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            if (firstRender)
-            {
-                await RefreshMap();
-            }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		try
+		{
+			if (firstRender)
+			{
+				await RefreshMap();
+			}
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
-        }
-        finally
-        {
-            await loadingService.HideAsync();
-        }
-    }
-    #endregion
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+	#endregion
 
-    #region Map Logic
-    private async Task RefreshMap()
-    {
-        try
-        {
-            await loadingService.ShowAsync("Verificando Permisos de Geolocalización...");
+	#region Map Logic
+	private async Task RefreshMap()
+	{
+		try
+		{
+			await loadingService.ShowAsync("Verificando Permisos de Geolocalización...");
 
-            if (await JS.InvokeAsync<bool>("requestGeolocationPermission"))
-            {
-                listZones = [];
+			if (await JS.InvokeAsync<bool>("requestGeolocationPermission"))
+			{
+				listZones = [];
 
-                /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
-                ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
-                    throw new Exception("Error al obtener los datos del servicio instanciado");
+				/// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+				ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+					throw new Exception("Error al obtener los datos del servicio instanciado");
 
-                await loadingService.ShowAsync("Obteniendo Zonas...");
-                if (service is not null)
-                    listZones = await service.ObtainZones();
+				await loadingService.ShowAsync("Obteniendo Zonas...");
+				if (service is not null)
+					listZones = await service.ObtainZones();
 
-                List<List<Coords>> coords = [];
+				List<List<Coords>> coords = [];
 
-                foreach (var zone in listZones)
-                {
-                    List<Coords> auxCoords = [];
-                    foreach (var coord in (JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas) ?? []))
-                    {
-                        auxCoords.Add(new Coords
-                        {
-                            id = zone.zonmar_consecutivoP,
-                            lat = coord.lat,
-                            lng = coord.lng
-                        });
-                    }
-                    coords.Add(auxCoords);
-                }
+				foreach (var zone in listZones)
+				{
+					List<Coords> auxCoords = [];
+					foreach (var coord in (JsonConvert.DeserializeObject<List<Coords>>(zone.zonmar_coordenadas) ?? []))
+					{
+						auxCoords.Add(new Coords
+						{
+							id = zone.zonmar_consecutivoP,
+							lat = coord.lat,
+							lng = coord.lng
+						});
+					}
+					coords.Add(auxCoords);
+				}
 
-                await loadingService.ShowAsync("Inicializando Mapa...");
-                await JS.InvokeVoidAsync("googleMapsInterop.initMap", "map", 6.185, -75.656, 16, coords.ToArray());
-                await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", false);
-                StateHasChanged();
-            }
-            else
-            {
-                throw new Exception("Permiso de geolocalización denegado.");
-            }
+				await loadingService.ShowAsync("Inicializando Mapa...");
+				await JS.InvokeVoidAsync("googleMapsInterop.initMap", "map", 6.185, -75.656, 16, coords.ToArray());
+				await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", false);
+				StateHasChanged();
+			}
+			else
+			{
+				throw new Exception("Permiso de geolocalización denegado.");
+			}
 
-            await RefreshNotations();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
-        }
-        finally
-        {
-            await loadingService.HideAsync();
-        }
-    }
+			await RefreshNotations();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al inicializar el mapa: {ex.Message}");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
 
-    private async Task ToggleEditMode()
-    {
-        try
-        {
-            ToggleButtonValue = !ToggleButtonValue;
+	private async Task ToggleEditMode()
+	{
+		try
+		{
+			ToggleButtonValue = !ToggleButtonValue;
 
-            if (ToggleButtonValue)
-            {
-                ToggleButtonText = "Finalizar edición";
-            }
-            else
-            {
-                ToggleButtonText = "Editar polígonos";
-            }
+			if (ToggleButtonValue)
+			{
+				ToggleButtonText = "Finalizar edición";
+			}
+			else
+			{
+				ToggleButtonText = "Editar polígonos";
+			}
 
-            await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al cambiar el modo de edición: {ex.Message}");
-        }
-    }
+			await JS.InvokeVoidAsync("googleMapsInterop.setPolygonsEditable", ToggleButtonValue);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al cambiar el modo de edición: {ex.Message}");
+		}
+	}
 
-    private async Task<(bool inZone, int zoneId)> ValidateCurrentPosition()
-    {
-        try
-        {
-            /// Notify the zone validation
-            PositionButtonText = "Verificando localización...";
+	private async Task<(bool inZone, int zoneId)> ValidateCurrentPosition()
+	{
+		try
+		{
+			/// Notify the zone validation
+			PositionButtonText = "Verificando localización...";
 
-            /// Obtain the zone id value
-            int zoneId = await JS.InvokeAsync<int>("googleMapsInterop.isPositionInsidePolygons");
+			/// Obtain the zone id value
+			int zoneId = await JS.InvokeAsync<int>("googleMapsInterop.isPositionInsidePolygons");
 
-            /// Validate the current zone
-            if (zoneId != 0)
-            {
-                return (true, zoneId);
-            }
-            else
-            {
-                PositionButtonText = "❌ La posición está fuera de todos los polígonos.";
-                return (false, 0);
-            }
-        }
-        catch (Exception ex)
-        {
-            PositionButtonText = "Error al guardar la marcación.";
-            Console.WriteLine($"Error al validar la zona actual: {ex.Message}");
-            // Aquí pondrías tu lógica de autenticación
-            await JS.InvokeVoidAsync("alert", "❌ Error al guardar");
-            return (false, 0);
-        }
-    }
+			/// Validate the current zone
+			if (zoneId != 0)
+			{
+				return (true, zoneId);
+			}
+			else
+			{
+				PositionButtonText = "❌ La posición está fuera de todos los polígonos.";
+				return (false, 0);
+			}
+		}
+		catch (Exception ex)
+		{
+			PositionButtonText = "Error al guardar la marcación.";
+			Console.WriteLine($"Error al validar la zona actual: {ex.Message}");
+			// Aquí pondrías tu lógica de autenticación
+			await JS.InvokeVoidAsync("alert", "❌ Error al guardar");
+			return (false, 0);
+		}
+	}
 
-    [JSInvokable]
-    public static void OnPolygonCreated(string polygonJson)
-    {
-        try
-        {
-            if (_instance is null)
-                throw new Exception("No se generó la instancia del formuario Map");
+	[JSInvokable]
+	public static void OnPolygonCreated(string polygonJson)
+	{
+		try
+		{
+			if (_instance is null)
+				throw new Exception("No se generó la instancia del formuario Map");
 
-            _instance.ShowZoneModal();
-            _instance.polygonJson = polygonJson;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al crear el polígono: {ex.Message}");
-        }
-    }
+			_instance.ShowZoneModal();
+			_instance.polygonJson = polygonJson;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al crear el polígono: {ex.Message}");
+		}
+	}
 
-    #endregion
+	#endregion
 
-    #region Zone Logic
-    private void ShowZoneModal()
-    {
-        if (_instance is not null)
-        {
-            _instance.IsZoneModalOpen = true;
-            _instance.StateHasChanged();
-        }
-    }
+	#region Zone Logic
+	private void ShowZoneModal()
+	{
+		if (_instance is not null)
+		{
+			_instance.IsZoneModalOpen = true;
+			_instance.StateHasChanged();
+		}
+	}
 
-    private async Task CloseZoneModal()
-    {
-        try
-        {
-            IsZoneModalOpen = false;
-            zone = new();
+	private async Task CloseZoneModal()
+	{
+		try
+		{
+			IsZoneModalOpen = false;
+			zone = new();
 
-            await RefreshMap();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al cerrar el modal de zona: {ex.Message}");
-            await JS.InvokeVoidAsync("alert", "❌ Error al cerrar el modal de zona");
-        }
-    }
+			await RefreshMap();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al cerrar el modal de zona: {ex.Message}");
+			await JS.InvokeVoidAsync("alert", "❌ Error al cerrar el modal de zona");
+		}
+	}
 
-    private void UpdateHoraInicio(string? value)
-    {
-        if (TimeSpan.TryParse(value, out var hora))
-        {
-            zone.zonmar_hora_inicio = DateTime.Today.Add(hora);
-        }
-    }
+	private void UpdateHoraInicio(string? value)
+	{
+		if (TimeSpan.TryParse(value, out var hora))
+		{
+			zone.zonmar_hora_inicio = DateTime.Today.Add(hora);
+		}
+	}
 
-    private void UpdateHoraFin(string? value)
-    {
-        if (TimeSpan.TryParse(value, out var hora))
-        {
-            zone.zonmar_hora_fin = DateTime.Today.Add(hora);
-        }
-    }
+	private void UpdateHoraFin(string? value)
+	{
+		if (TimeSpan.TryParse(value, out var hora))
+		{
+			zone.zonmar_hora_fin = DateTime.Today.Add(hora);
+		}
+	}
 
-    private async Task HandleSubmitZone()
-    {
-        try
-        {
-            await loadingService.ShowAsync("Generando Zona...");
+	private async Task HandleSubmitZone()
+	{
+		try
+		{
+			await loadingService.ShowAsync("Generando Zona...");
 
-            zone.zonmar_coordenadas = polygonJson;
+			zone.zonmar_coordenadas = polygonJson;
 
-            ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
-                throw new Exception("Error al obtener los datos del servicio instanciado");
-            if (service is not null)
-                await service.CreateZone(zone);
+			ZonesApiService service = ServiceLocator.Instance?.GetRequiredService<ZonesApiService>() ??
+				throw new Exception("Error al obtener los datos del servicio instanciado");
+			if (service is not null)
+				await service.CreateZone(zone);
 
-            await JS.InvokeVoidAsync("alert", "✅ Se creó correctamente la zona");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            await JS.InvokeVoidAsync("alert", "X Error al guardar la zona.");
-        }
-        finally
-        {
-            await loadingService.HideAsync();
-        }
-    }
-    #endregion
+			await JS.InvokeVoidAsync("alert", "✅ Se creó correctamente la zona");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "X Error al guardar la zona.");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+	#endregion
 
-    #region Notation Logic
+	#region Notation Logic
 
-    private async Task RefreshNotations()
-    {
-        try
-        {
-            await loadingService.ShowAsync("Cargando marcaciones...");
+	private async Task RefreshNotations()
+	{
+		try
+		{
+			await loadingService.ShowAsync("Cargando marcaciones...");
 
-            /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
-            NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
-                throw new Exception("Error al obtener los datos del servicio instanciado");
-            resultNotations = await notationService.ObtainNotations(null, null, null, null);
-            await InvokeAsync(StateHasChanged);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener los registros de marcación: {ex.Message}");
-        }
-        finally
-        {
-            await loadingService.HideAsync();
-        }
-    }
+			/// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
+			NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
+				throw new Exception("Error al obtener los datos del servicio instanciado");
+			resultNotations = await notationService.ObtainNotations(Auth.UserLogged, null, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error al obtener los registros de marcación: {ex.Message}");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
 
-    private async Task StartTrackingLocation()
-    {
-        try
-        {
-            await JS.InvokeVoidAsync("startTrackingLocation");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error al seguir el trazo de la persona");
-            Console.WriteLine(ex.Message);
-        }
+	private async Task StartTrackingLocation()
+	{
+		try
+		{
+			await JS.InvokeVoidAsync("startTrackingLocation");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine("Error al seguir el trazo de la persona");
+			Console.WriteLine(ex.Message);
+		}
 
-    }
+	}
 
-    private async Task ShowNotationModal()
-    {
-        try
-        {
-            var positionResult = await ValidateCurrentPosition();
+	private async Task ShowNotationModal()
+	{
+		try
+		{
+			var positionResult = await ValidateCurrentPosition();
 
-            if (!positionResult.inZone)
-            {
-                await JS.InvokeVoidAsync("alert", "No se encuentra dentro de una zona de marcación válida");
-                return;
-            }
+			if (!positionResult.inZone)
+			{
+				await JS.InvokeVoidAsync("alert", "No se encuentra dentro de una zona de marcación válida");
+				return;
+			}
 
-            IsNotationModalOpen = true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            await JS.InvokeVoidAsync("alert", "X Error al cargar el archivo");
-        }
-    }
+			IsNotationModalOpen = true;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "X Error al cargar el archivo");
+		}
+	}
 
-    private void CloseNotationModal()
-    {
-        IsNotationModalOpen = false;
-        notation = new();
-        uploadedFile = null;
-        PositionButtonText = "Generar Marcación";
-    }
+	private void CloseNotationModal()
+	{
+		IsNotationModalOpen = false;
+		notation = new();
+		uploadedFile = null;
+		PositionButtonText = "Generar Marcación";
+	}
 
-    private void HandleFileChange(InputFileChangeEventArgs e)
-    {
-        try
-        {
-            uploadedFile = e.File;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            JS.InvokeVoidAsync("alert", "X Error al cargar el archivo");
-        }
-    }
+	private void HandleFileChange(InputFileChangeEventArgs e)
+	{
+		try
+		{
+			uploadedFile = e.File;
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			JS.InvokeVoidAsync("alert", "X Error al cargar el archivo");
+		}
+	}
 
-    private async Task HandleSubmitNotation()
-    {
-        try
-        {
-            await loadingService.ShowAsync("Generando Marcación...");
+	private async Task HandleSubmitNotation()
+	{
+		try
+		{
+			await loadingService.ShowAsync("Generando Marcación...");
 
-            var positionResult = await ValidateCurrentPosition();
+			var positionResult = await ValidateCurrentPosition();
 
-            if (!positionResult.inZone)
-                return;
+			if (!positionResult.inZone)
+				return;
 
-            if (uploadedFile != null)
-            {
-                using var stream = uploadedFile.OpenReadStream(maxAllowedSize: 10_000_000);
-                var filePath = Path.Combine("wwwroot/uploads", uploadedFile.Name);
-                using var fileStream = File.Create(filePath);
-                await stream.CopyToAsync(fileStream);
-                Console.WriteLine($"Archivo guardado en: {filePath}");
-            }
+			if (uploadedFile != null)
+			{
+				using var stream = uploadedFile.OpenReadStream(maxAllowedSize: 10_000_000);
+				var filePath = Path.Combine("wwwroot/uploads", uploadedFile.Name);
+				using var fileStream = File.Create(filePath);
+				await stream.CopyToAsync(fileStream);
+				Console.WriteLine($"Archivo guardado en: {filePath}");
+			}
 
-            /// Assign the models values result
-            var resultZona = listZones.Find(x => x.zonmar_consecutivoP == positionResult.zoneId)
-                ?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
+			/// Assign the models values result
+			var resultZona = listZones.Find(x => x.zonmar_consecutivoP == positionResult.zoneId)
+				?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
 
-            notation.marusu_cedula = Auth.UserLogged;
-            notation.marzonmar_consecutivo = positionResult.zoneId;
-            notation.mar_archivo = uploadedFile?.Name ?? "NoFile";
-            notation.mar_estado = true;
-            notation.Creation = true;
+			notation.marusu_cedula = Auth.UserLogged;
+			notation.marzonmar_consecutivo = positionResult.zoneId;
+			notation.mar_archivo = uploadedFile?.Name ?? "NoFile";
+			notation.mar_estado = true;
+			notation.Creation = true;
 
-            NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
-                throw new Exception("Error al obtener los datos del servicio instanciado");
-            await notationService.CreateNotation(notation);
+			NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
+				throw new Exception("Error al obtener los datos del servicio instanciado");
+			await notationService.CreateNotation(notation);
 
-            PositionButtonText = "Marcación Correcta.";
+			PositionButtonText = "Marcación Correcta.";
 
-            await JS.InvokeVoidAsync("alert", "✅ Marcación Creada Correctamente");
+			await JS.InvokeVoidAsync("alert", "✅ Marcación Creada Correctamente");
 
-            CloseNotationModal();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            await JS.InvokeVoidAsync("alert", "✅ Error al guardar la marcación.");
-        }
-        finally
-        {
-            await loadingService.HideAsync();
-        }
-    }
-    #endregion
+			CloseNotationModal();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			await JS.InvokeVoidAsync("alert", "✅ Error al guardar la marcación.");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+	#endregion
 }
