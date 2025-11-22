@@ -42,7 +42,7 @@
         this.currentMarker = new google.maps.Marker({
             position: { lat: lat, lng: lng },
             map: this.map,
-            title: "Tu ubicación actual"
+            title: "Tu ubicación actual"ñ
         });
 
         // 🔹 Inicializar Drawing Manager
