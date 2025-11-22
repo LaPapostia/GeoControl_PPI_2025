@@ -3,13 +3,15 @@ try
     /// Create the builder for the application
     var builder = DistributedApplication.CreateBuilder(args);
 
-    /// Define the docker behaviour component
-    builder.AddDockerComposeEnvironment("env")
-               .WithDashboard(dashboard =>
-               {
-                   dashboard.WithHostPort(8080)
-                            .WithForwardedHeaders(enabled: true);
-               });
+    #pragma warning disable ASPIREXXX // Experimental feature
+        /// Define the docker behaviour component
+        builder.AddDockerComposeEnvironment("env")
+                   .WithDashboard(dashboard =>
+                   {
+                       dashboard.WithHostPort(8080)
+                                .WithForwardedHeaders(enabled: true);
+                   });
+    #pragma warning restore ASPIREXXX
 
     #region Database Configuration
     //var sql = builder.AddDockerfile("geocontrol-sql-docker", "../Geocontrol_PPI_NET_9.Resources", "../Geocontrol_PPI_NET_9.Resources/Dockerfile")
