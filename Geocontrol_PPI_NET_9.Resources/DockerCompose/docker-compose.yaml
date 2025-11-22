@@ -1,0 +1,108 @@
+version: "3.9"
+
+services:
+  geocontrol_sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: "0:0"
+    container_name: geocontrol_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SQL_PASSWORD}
+      - MSSQL_PID=Express
+      - TZ=America/Bogota
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${SQL_PASSWORD}" -C -Q "SELECT 'Healthcheck OK'"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - geocontrol-network
+    volumes:
+      - geocontrol_sql_data:/var/opt/mssql
+      - /etc/localtime:/etc/localtime:ro
+
+  env-dashboard:
+    image: "mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest"
+    environment:
+      ASPIRE_DASHBOARD_FORWARDEDHEADERS_ENABLED: "true"
+    ports:
+      - "8080:18888"        # Dashboard: http://IP_EC2:8080
+    expose:
+      - "18889"             # gRPC interno para telemetría
+    networks:
+      - "geocontrol-network"
+    restart: "always"
+
+  cache:
+    image: "docker.io/library/redis:7.4"
+    entrypoint:
+      - "/bin/sh"
+    command:
+      - "-c"
+      - "redis-server --requirepass $$REDIS_PASSWORD"
+    environment:
+      REDIS_PASSWORD: "${CACHE_PASSWORD}"
+    expose:
+      - "6379"              # solo interno (no se publica al host)
+    networks:
+      - "geocontrol-network"
+
+  apiservice:
+    image: "${APISERVICE_IMAGE}"   # apiservice:latest
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${APISERVICE_PORT}"              # 8080 dentro del contenedor
+      ConnectionStrings__sql-connection-string: "${SQL_CONNECTION_STRING}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://env-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "apiservice"
+    expose:
+      - "${APISERVICE_PORT}"                         # 8080 interno
+    ports:
+      - "5000:${APISERVICE_PORT}"                    # http://IP_EC2:5000 → apiservice:8080
+    depends_on:
+      geocontrol_sql:
+        condition: "service_started"
+      cache:
+        condition: "service_started"
+    networks:
+      - "geocontrol-network"
+
+  webfrontend:
+    image: "${WEBFRONTEND_IMAGE}"   # webfrontend:latest
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "${WEBFRONTEND_PORT}"              # 8080 dentro del contenedor
+      ConnectionStrings__cache: "cache:6379,password=${CACHE_PASSWORD}"
+      services__apiservice__http__0: "http://apiservice:${APISERVICE_PORT}"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://env-dashboard:18889"
+      OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+      OTEL_SERVICE_NAME: "webfrontend"
+    expose:
+      - "${WEBFRONTEND_PORT}"                        
+    ports:
+      - "80:${WEBFRONTEND_PORT}"                   
+    depends_on:
+      cache:
+        condition: "service_started"
+      apiservice:
+        condition: "service_started"
+    networks:
+      - "geocontrol-network"
+
+networks:
+  geocontrol-network:
+    driver: bridge
+
+volumes:
+  geocontrol_sql_data:
