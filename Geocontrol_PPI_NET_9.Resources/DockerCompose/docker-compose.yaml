@@ -3,6 +3,7 @@ version: "3.9"
 services:
   geocontrol_sql:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    user: "0:0"
     container_name: geocontrol_sql
     environment:
       - ACCEPT_EULA=Y

@@ -1,41 +1,276 @@
 ﻿@page "/reports"
+@using Geocontrol_PPI_NET_9.Web.Services
 @using Geocontrol_PPI_NET_9.Web.Services.Loading
+@using Geocontrol_PPI_NET_9.Models.Notations
+@using Geocontrol_PPI_NET_9.Web.Services.Notations
+@using Geocontrol_PPI_NET_9.Web.Services.Auth
+@using System.Globalization
 
 @inject LoadingService loadingService
 @inject IJSRuntime JS
+@page "/notations"
 
-<h3>Reporte - Power BI (Mock)</h3>
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header bg-dark text-white">
-            Visualización Power BI
-        </div>
-        <div class="card-body text-center">
-            <!-- IFrame simula el reporte -->
-            <iframe title="Power BI Report Mock"
-                    width="100%"
-                    height="500px"
-                    src="https://app.powerbi.com/view?r=eyJrIjoiYzA2Yz...mockid..."
-                    frameborder="0"
-                    allowFullScreen="true">
-            </iframe>
-        </div>
-    </div>
+@inject IJSRuntime JS
+@inject NotationApiService notationApiService
+@inject AuthService authService
+@inject LoadingService loadingService
+
+<div class="main-content-card">
+	<h2 class="title mb-3 text-center">Marcaciones</h2>
+	<hr class="divider" />
+
+	<!-- Filtros de búsqueda -->
+	<h3 class="section-title mb-3">Filtros de búsqueda</h3>
+	<EditForm Model="@filter" OnValidSubmit="@SearchNotationsAsync">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div class="row mb-3">
+			<div class="col-md-3 mb-2">
+				<label>Cédula</label>
+				<InputText @bind-Value="filter.Identification" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Zona</label>
+				<InputText @bind-Value="filter.ZoneId" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Fecha Inicio</label>
+				<InputDate @bind-Value="filter.StartDate" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Fecha Fin</label>
+				<InputDate @bind-Value="filter.FinishDate" class="form-control" />
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-app-secondary">Buscar</button>
+	</EditForm>
+
+	<hr class="divider" />
+
+	<!-- Resultados -->
+	<h3 class="section-title mb-3">Resultados</h3>
+
+	@if (notations is null || !notations.Any())
+	{
+		<p class="text-muted text-center">No se encontraron marcaciones.</p>
+	}
+	else
+	{
+		<div class="table-responsive">
+			<table class="table-striped table-hover table">
+				<thead>
+					<tr>
+						<th>Consecutivo</th>
+						<th>Cédula</th>
+						<th>Zona</th>
+						<th>Archivo</th>
+						<th>Estado</th>
+						<th>Observación</th>
+						<th>Fecha Creación</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var n in notations)
+					{
+						<tr>
+							<td>@n.mar_consecutivoP</td>
+							<td>@n.marusu_cedula</td>
+							<td>@n.marzonmar_consecutivo</td>
+							<td>@n.mar_archivo</td>
+							<td>@n.mar_estado</td>
+							<td>@n.mar_observacion</td>
+							<td>@n.mar_fecha.ToString("dd/MM/yyyy HH:mm")</td>
+							<td>
+								<button class="btn btn-sm btn-outline-primary"
+										@onclick="@(() => EditNotation(n))">
+									Editar
+								</button>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+
+	<hr class="divider" />
+
+	<!-- Formulario Crear / Editar -->
+	<h3 class="section-title mb-3">@((isEdit ? "Editar" : "Nueva") + " Marcación")</h3>
+
+	<EditForm Model="@currentNotation" OnValidSubmit="@SaveNotationAsync">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div class="row mb-3">
+			<div class="col-md-3 mb-2">
+				<label>Consecutivo</label>
+				<InputNumber @bind-Value="currentNotation.marzonmar_consecutivo" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Cédula</label>
+				<InputText @bind-Value="currentNotation.marusu_cedula" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Zona</label>
+				<InputNumber @bind-Value="currentNotation.marzonmar_consecutivo" class="form-control" />
+			</div>
+			<div class="col-md-3 mb-2">
+				<label>Archivo</label>
+				<InputText @bind-Value="currentNotation.mar_archivo" class="form-control" />
+			</div>
+		</div>
+
+		<div class="row mb-3">
+
+			<div class="col-md-9 mb-2">
+				<label>Observación</label>
+				<InputText @bind-Value="currentNotation.mar_observacion" class="form-control" />
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-app-secondary me-2">
+			@(isEdit ? "Actualizar" : "Crear")
+		</button>
+		<button type="button" class="btn btn-outline-secondary" @onclick="NewNotation">
+			Limpiar
+		</button>
+	</EditForm>
+
+	@if (!string.IsNullOrEmpty(Message))
+	{
+		<p class="mt-4 text-center font-medium @(IsError ? "text-warning" : "text-warning")">@Message</p>
+	}
 </div>
 
-@code{
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+@code {
+
+	private class NotationFilter
+	{
+		public string? Identification { get; set; }
+		public string? ZoneId { get; set; }
+		public DateTime? StartDate { get; set; }
+		public DateTime? FinishDate { get; set; }
+	}
+
+	private NotationFilter filter = new();
+	private List<Notation> notations = new();
+	private Notation currentNotation = new();
+	private bool isEdit = false;
+
+	private string Message = string.Empty;
+	private bool IsError = false;
+
+	protected override async Task OnInitializedAsync()
+	{
+		// Si quieres precargar la cédula con el usuario logueado:
+		await Task.CompletedTask;
+
+		filter = new()
+		{
+			StartDate = DateTime.Now,
+			FinishDate = DateTime.Now
+		};
+
+		await SearchNotationsAsync();
+	}
+
+	private async Task SearchNotationsAsync()
 	{
 		try
 		{
-			await loadingService.ShowAsync("Cargando Información...");
-			
+			await loadingService.ShowAsync("Obteniendo marcaciones...");
+			await Task.Delay(300);
+
+			string? start = filter.StartDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+			string? finish = filter.FinishDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+			notations = await notationApiService.ObtainNotations(
+				filter.Identification?.ToString(),
+				filter.ZoneId == null ? null : Convert.ToInt32(filter.ZoneId),
+				start,
+				finish
+			);
+
+			Message = string.Empty;
+			IsError = false;
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
-			await JS.InvokeVoidAsync("alert", "X Error al cargar la información del reporte");
+			IsError = true;
+			Message = "Error al buscar las marcaciones.";
+			await JS.InvokeVoidAsync("alert", "X Error al buscar las marcaciones");
+		}
+		finally
+		{
+			await loadingService.HideAsync();
+		}
+	}
+
+	private void EditNotation(Notation n)
+	{
+		// Clon simple para no ligar directamente la fila
+		currentNotation = new Notation
+		{
+			mar_consecutivoP = n.mar_consecutivoP,
+			marusu_cedula = n.marusu_cedula,
+			marzonmar_consecutivo = n.marzonmar_consecutivo,
+			mar_archivo = n.mar_archivo,
+			mar_estado = n.mar_estado,
+			mar_observacion = n.mar_observacion,
+			Creation = n.Creation
+		};
+		isEdit = true;
+	}
+
+	private void NewNotation()
+	{
+		currentNotation = new Notation
+		{
+			// si quieres setear por defecto la cédula del logueado:
+			// marusu_cedula = authService.UserLogged
+		};
+		isEdit = false;
+		Message = string.Empty;
+		IsError = false;
+
+		StateHasChanged();
+	}
+
+	private async Task SaveNotationAsync()
+	{
+		try
+		{
+			await loadingService.ShowAsync(isEdit ? "Actualizando marcación..." : "Creando marcación...");
+			await Task.Delay(300);
+
+			currentNotation.mar_fecha = DateTime.Now;
+			currentNotation.Creation = !isEdit;
+
+			await notationApiService.CreateNotation(currentNotation);
+
+			await JS.InvokeVoidAsync("alert", "Operación ejecutada correctamente.");
+
+			Message = "Operación ejecutada correctamente.";
+			IsError = false;
+
+			// Refrescar lista
+			await SearchNotationsAsync();
+
+			// Limpiar formulario si estás en modo crear
+			NewNotation();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			IsError = true;
+			Message = "Error al guardar la marcación.";
+			await JS.InvokeVoidAsync("alert", "X Error al guardar la marcación");
 		}
 		finally
 		{

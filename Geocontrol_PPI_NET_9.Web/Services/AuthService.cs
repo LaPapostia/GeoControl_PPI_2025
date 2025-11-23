@@ -4,13 +4,15 @@
     {
         public bool IsLoggedIn { get; private set; } = false;
         public string UserLogged { get; private set; } = string.Empty;
+        public int UserType { get; private set; } = 1;
 
         public event Action OnChange;
 
-        public void Login(string Identification)
+        public void Login(string Identification, int type)
         {
             IsLoggedIn = true;
             UserLogged = Identification;
+            UserType= type;
             NotifyStateChanged();
         }
 

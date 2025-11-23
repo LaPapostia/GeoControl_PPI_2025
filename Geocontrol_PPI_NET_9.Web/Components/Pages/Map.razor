@@ -89,10 +89,10 @@
 
             <div class="info-card">
                 <h4>Zona de Marcación</h4>
-                <p><strong>Estado:</strong> Dentro de la zona</p>
-                <p><strong>Zona:</strong> Parque Central</p>
-                <p><strong>Hora de Entrada:</strong> 08:15 AM</p>
-                <p><strong>Hora de Salida:</strong> 12:30 PM</p>
+                <p><strong>Estado:</strong> Dentro de una Zona</p>
+                <p><strong>Zona:</strong>  @current_zone.zonmar_nombre</p>
+                <p><strong>Hora de Entrada:</strong> @current_zone.zonmar_hora_inicio.ToString("hh:mm:ss tt")</p>
+                <p><strong>Hora de Salida:</strong> @current_zone.zonmar_hora_fin.ToString("hh:mm:ss tt")</p>
             </div>
 
             <EditForm Model="@notation" OnValidSubmit="HandleSubmitNotation">
@@ -192,6 +192,10 @@
     private List<Zone> listZones = [];
     private List<Notation> resultNotations = [];
     #endregion
+
+    #region Zone Properties
+    private static Zone current_zone = new();
+    #endregion
     #endregion
 
     #region Inicialization
@@ -283,6 +287,12 @@
     {
         try
         {
+            if (Auth.UserType != 2)
+            {
+                await JS.InvokeVoidAsync("alert", "❌ No tienes permisos para editar los polígonos.");
+                return;
+            }
+
             ToggleButtonValue = !ToggleButtonValue;
 
             if (ToggleButtonValue)
@@ -334,14 +344,14 @@
     }
 
     [JSInvokable]
-    public static void OnPolygonCreated(string polygonJson)
+    public static async Task OnPolygonCreated(string polygonJson)
     {
         try
         {
             if (_instance is null)
                 throw new Exception("No se generó la instancia del formuario Map");
 
-            _instance.ShowZoneModal();
+            await _instance.ShowZoneModal();
             _instance.polygonJson = polygonJson;
         }
         catch (Exception ex)
@@ -353,8 +363,14 @@
     #endregion
 
     #region Zone Logic
-    private void ShowZoneModal()
+    private async Task ShowZoneModal()
     {
+        if (Auth.UserType != 2)
+        {
+            await JS.InvokeVoidAsync("alert", "❌ No tienes permisos para crear zonas.");
+            return;
+        }
+
         if (_instance is not null)
         {
             _instance.IsZoneModalOpen = true;
@@ -408,6 +424,7 @@
                 await service.CreateZone(zone);
 
             await JS.InvokeVoidAsync("alert", "✅ Se creó correctamente la zona");
+            await CloseZoneModal();
         }
         catch (Exception ex)
         {
@@ -432,7 +449,7 @@
             /// Carga inicial de polygonos y mapa centrado en una ubicación predeterminada
             NotationApiService notationService = ServiceLocator.Instance?.GetRequiredService<NotationApiService>() ??
                 throw new Exception("Error al obtener los datos del servicio instanciado");
-            resultNotations = await notationService.ObtainNotations(null, null, null, null);
+            resultNotations = await notationService.ObtainNotations(Auth.UserLogged, null, DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
@@ -470,6 +487,11 @@
                 await JS.InvokeVoidAsync("alert", "No se encuentra dentro de una zona de marcación válida");
                 return;
             }
+
+            /// Assign the models values result
+            current_zone = listZones.Find(x => x.zonmar_consecutivoP == positionResult.zoneId)
+                ?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
+            StateHasChanged();
 
             IsNotationModalOpen = true;
         }
@@ -520,10 +542,6 @@
                 await stream.CopyToAsync(fileStream);
                 Console.WriteLine($"Archivo guardado en: {filePath}");
             }
-
-            /// Assign the models values result
-            var resultZona = listZones.Find(x => x.zonmar_consecutivoP == positionResult.zoneId)
-                ?? new Zone() { zonmar_nombre = "NotFound", zonmar_observacion = "NotFound" };
 
             notation.marusu_cedula = Auth.UserLogged;
             notation.marzonmar_consecutivo = positionResult.zoneId;

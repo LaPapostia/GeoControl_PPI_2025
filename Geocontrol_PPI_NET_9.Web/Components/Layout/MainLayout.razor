@@ -14,16 +14,24 @@
     }
 
     <main>
-        @if (authService.IsLoggedIn)
+        @if (!authService.IsLoggedIn)
         {
-            <div class="banner-layout">
-                <h1 class="navbar-brand">/GeoControl App</h1>
-            </div>
+            <Geocontrol_PPI_NET_9.Web.Components.Pages.Auth.Login />
         }
+        else
+        {
+            @if (authService.IsLoggedIn)
+            {
+                <div class="banner-layout">
+                    <h1 class="navbar-brand">/GeoControl App</h1>
+                </div>
+            }
 
-        <article class="content px-4">
-            @Body
-        </article>
+            <article class="content px-4">
+                @Body
+            </article>
+        }
+       
     </main>
 </div>
 

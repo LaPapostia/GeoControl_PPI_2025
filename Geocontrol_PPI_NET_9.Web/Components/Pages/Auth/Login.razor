@@ -72,7 +72,7 @@
                 await loadingService.ShowAsync("Iniciando sesión...");
                 await Task.Delay(1000);
 
-                Auth.Login(authModel.Identification);
+                Auth.Login(authModel.Identification, authModel.Identification == "2020" ? 2 : 1);
                 Navigation.NavigateTo("/map");
                 IsError = false;
             }

@@ -61,6 +61,25 @@ public class UserApiService
     }
 
     /// <summary>
+    /// Method to create a user or edited user in base of the identification id
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task CreateUserAsync(User user, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/User", user, cancellationToken);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching users: {ex.Message}");
+            throw;
+        }
+    }
+
+    /// <summary>
     /// Método para obtener la lista de usuarios desde la API
     /// </summary>
     /// <param name="cancellationToken"></param>
